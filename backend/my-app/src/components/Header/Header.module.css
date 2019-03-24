@@ -1,0 +1,26 @@
+.button {
+    color: white;
+    height: 30px;
+    margin: 10px ;
+    background-color: black;
+    border: 0px;
+}
+.button:hover {
+    color: blue;
+}
+.buttonsearch{
+    float: right;
+    margin: 10px;
+    margin-right: 30px;
+}
+.search {
+    float: right;
+    margin: 10px;
+    margin-right: 10px;
+}
+.header {
+    background-color: black;
+    
+    height: 50px;
+}
+
