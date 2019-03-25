@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 //import axios from 'axios';
 import styles from './Login.module.css';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 const fakeAuth = {
 	isAuthenticated : false,
