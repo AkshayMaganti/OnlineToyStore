@@ -89,6 +89,7 @@ app.post('/login', function(req,res){
           }
         }
         db.close();
+        res.json(result);
       }
       else{
         console.log("username doesnot exist")
@@ -97,7 +98,6 @@ app.post('/login', function(req,res){
     });
     
   });
-  //res.json(result);
 })
 
 // catch 404 and forward to error handler
