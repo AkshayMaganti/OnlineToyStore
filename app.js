@@ -67,6 +67,7 @@ app.post('/login', function(req,res){
     };
     let result = {
       value : true,
+      username : ''
     } 
     dbo.collection('users').findOne(obj, function(err,res1) {
       if (err) next(err);
@@ -76,6 +77,7 @@ app.post('/login', function(req,res){
           // Passwords match
           result = {
             value : true,
+            username : res1.username
           }
           
 
@@ -86,6 +88,7 @@ app.post('/login', function(req,res){
           console.log("password doesn't match")
           result = {
             value : false,
+            username : res1.username
           }
         }
         db.close();

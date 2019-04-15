@@ -4,6 +4,10 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import {ButtonContainer} from './Button';
 export default class Navbar extends Component {
+    constructor(){
+        super();
+    };
+    
   render() {
     return(
         <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
@@ -20,12 +24,12 @@ export default class Navbar extends Component {
             </Link>
         </li>
         </ul>
-        <Link to='/cart' className="ml-auto">
+        <Link to={{pathname: "/cart",user: this.props.user}} className="ml-auto">
         <ButtonContainer>
             <span className="mr-2">
             <i className="fas fa-cart-plus"></i>
             </span>
-            My Cart
+                My Cart
         </ButtonContainer>
         </Link>
         </NavWrapper>

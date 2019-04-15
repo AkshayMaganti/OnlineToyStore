@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import styles from './Login.module.css';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
-import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
+import {  Redirect } from 'react-router-dom';
 
 
 class Login extends Component {
@@ -21,7 +21,8 @@ class Login extends Component {
 					username : '',
 					password : ''
 				},
-				isLoggedIn : false
+				isLoggedIn : false,
+				loggedInUser : ''
 			}
 
 		}	
@@ -85,7 +86,7 @@ class Login extends Component {
 			</div>
 			)
 		else if (this.state.isLoggedIn)
-				return (<Redirect to={{pathname:"/toylist"}} />);
+				return (<Redirect to={{pathname:"/toylist", state: { user: this.state.loggedInUser }}} >{this.state.loggedInUser}</Redirect>);
 		}
 	
 	};
@@ -150,13 +151,20 @@ class Login extends Component {
 		})
 		.then(res => res.json())
 		.then( (res) => {
-			 console.log(res.value);
-			 this.setState({
-				isLoggedIn : res.value
-			 });
-
-             return (<Redirect to={{pathname:"/toylist"}} />);
-			  //}
+			this.setState({
+				loginFields : {
+					username : '',
+					password : ''
+				},
+			});
+			 if (res.value === true){
+				this.setState({
+					isLoggedIn : res.value,
+					loggedInUser : res.username
+				 });
+			 }
+			 else
+			 	alert("Check your credentials");
 		});
 			
 			

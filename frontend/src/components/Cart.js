@@ -6,6 +6,7 @@ export default class extends Component {
       <div>
         <Navbar></Navbar>
         <h3> Hello from cart</h3>
+        {this.props.location.user}
       </div>
     )
   }

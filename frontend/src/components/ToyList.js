@@ -3,16 +3,24 @@ import Toy from './Toy';
 import Title from './Title';
 import {ProductConsumer} from '../context';
 import Navbar from './Navbar';
+import {  Redirect } from 'react-router-dom';
 export default class ToyList extends Component {
-  
+  constructor(){
+    super();
+
+  }
   render() {
+
     return (
       <React.Fragment>
-         <Navbar></Navbar>
+         <Navbar user={this.props.location.state.user} ></Navbar>
         <div className="py-5">
         <div className="container">
         <div className="row">
             <div className="col-10 mx-auto my-2 text-center text-blue">
+            <h1 className="text-capitalize font-weight-bold">
+              Hello {this.props.location.state.user}!!
+            </h1>
             <h1 className="text-capitalize font-weight-bold">
                   Toys List
             </h1>
@@ -33,5 +41,6 @@ export default class ToyList extends Component {
         </div>
       </React.Fragment>
     );
+
   }
 }
