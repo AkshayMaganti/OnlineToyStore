@@ -19,7 +19,7 @@ export default class Navbar extends Component {
         </Link>
         </li> */}
         <li>
-            <Link to="/toylist" className="nav-link">
+            <Link to={{pathname: "/toylist",user: this.props.user}} className="nav-link">
                 Toys
             </Link>
         </li>

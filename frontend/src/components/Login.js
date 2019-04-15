@@ -86,7 +86,7 @@ class Login extends Component {
 			</div>
 			)
 		else if (this.state.isLoggedIn)
-				return (<Redirect to={{pathname:"/toylist", state: { user: this.state.loggedInUser }}} >{this.state.loggedInUser}</Redirect>);
+				return (<Redirect to={{pathname:"/toylist", user: this.state.loggedInUser }} >{this.state.loggedInUser}</Redirect>);
 		}
 	
 	};

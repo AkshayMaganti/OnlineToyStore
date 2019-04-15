@@ -8,8 +8,10 @@
 
 body{
   font-family: "Oswald",sans-serif !important;
-  background: var(--mainWhite) !important;
+
   color:var(--mainDark) !important;
+  background-image: url('./Assets/9.jpg');
+  background-size: cover;
 }
 .text-title{
   font-family: 'Permanent Marker',cursive;

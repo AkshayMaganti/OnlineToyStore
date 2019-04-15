@@ -13,13 +13,13 @@ export default class ToyList extends Component {
 
     return (
       <React.Fragment>
-         <Navbar user={this.props.location.state.user} ></Navbar>
+         <Navbar user={this.props.location.user} ></Navbar>
         <div className="py-5">
         <div className="container">
         <div className="row">
             <div className="col-10 mx-auto my-2 text-center text-blue">
             <h1 className="text-capitalize font-weight-bold">
-              Hello {this.props.location.state.user}!!
+              Hello {this.props.location.user}!!
             </h1>
             <h1 className="text-capitalize font-weight-bold">
                   Toys List
