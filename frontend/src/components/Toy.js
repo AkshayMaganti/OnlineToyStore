@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { ProductConsumer } from "../context";
-import { toyProducts } from "../data";
+
 export default class Product extends Component {
   render() {
-    const { id, title, img, price, inCart } = this.props.product;
+    const { id, title, img, price, category } = this.props.product;
+    const username = this.props.user;
     return (
       <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
         <div className="card">
@@ -21,19 +22,15 @@ export default class Product extends Component {
                   </Link>
                   <button
                     className="cart-btn"
-                    disabled={inCart ? true : false}
+                    
                     onClick={() => {
-                      value.addToCart(id);
+                      value.addToCart(id, username);
                       value.openModal(id);
                     }}
                   >
-                    {inCart ? (
-                      <p className="text-capitalize mb-0" disabled>
-                        in cart
-                      </p>
-                    ) : (
+                    
                       <i className="fas fa-cart-plus" />
-                    )}
+                    
                   </button>
                 </div>
               );

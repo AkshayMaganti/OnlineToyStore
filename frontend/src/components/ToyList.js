@@ -7,8 +7,10 @@ import {  Redirect } from 'react-router-dom';
 export default class ToyList extends Component {
   constructor(){
     super();
-
+    
   }
+  
+
   render() {
 
     return (
@@ -31,7 +33,7 @@ export default class ToyList extends Component {
         <ProductConsumer>
           {value =>{
            return value.products.map(product => {
-             return <Toy key={product.id} product ={product}/>
+             return <Toy key={product.id} product ={product} user={this.props.location.user}/>
            })
 
           }}
@@ -44,3 +46,4 @@ export default class ToyList extends Component {
 
   }
 }
+

@@ -102,6 +102,21 @@ app.post('/login', function(req,res){
     
   });
 })
+//products retrieval
+app.get('/products', function(req, res, next) {
+  
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) throw err
+  
+    var dbo = db.db('test')
+    
+    dbo.collection('products').find().toArray(function (err, result) {
+      if (err) throw err
+  
+      res.json(result);
+    })
+  })
+  });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
