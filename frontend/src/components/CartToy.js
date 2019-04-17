@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { ProductConsumer } from "../context";
 
-export default class Product extends Component {
+export default class CartToy extends Component {
   render() {
-    const { id, title, img, price, category } = this.props.product;
-    const username = this.props.user;
+    const { id, title, img, price, category ,quantity} = this.props.cart;
+
     return (
       <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
         <div className="card">
@@ -20,18 +20,6 @@ export default class Product extends Component {
                   <Link to="/details">
                     <img src={img} alt="toy" className="card-img-top" />
                   </Link>
-                  <button
-                    className="cart-btn"
-                    
-                    onClick={() => {
-                      value.addToCart(id);
-                      value.openModal(id);
-                    }}
-                  >
-                    
-                      <i className="fas fa-cart-plus" />
-                    
-                  </button>
                 </div>
               );
             }}
@@ -42,6 +30,8 @@ export default class Product extends Component {
               <span className="mr-1">$</span>
               {price}
             </h5>
+            <hr />
+             Quantity : {quantity}
           </div>
         </div>
       </ProductWrapper>

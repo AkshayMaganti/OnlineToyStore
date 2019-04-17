@@ -118,6 +118,28 @@ app.get('/products', function(req, res, next) {
   })
   });
 
+//cart updation
+app.post('/items', function(req,res,next) {
+  //let username1 = req.body.username;
+  //if (username1 == null)
+    username1 = 'Akshay';
+  console.log(req.body);
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) throw err
+    var dbo = db.db('test');
+    let obj = {
+      username : username1,
+    };
+    
+    dbo.collection('cart').findOne(obj, function(err,result) {
+      if (err) next(err);
+      result1 = result.items;
+      console.log(json(result1));
+      res.json(result1);
+    })
+  })
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
