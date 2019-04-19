@@ -120,9 +120,9 @@ app.get('/products', function(req, res, next) {
 
 //cart updation
 app.post('/items', function(req,res,next) {
-  //let username1 = req.body.username;
+  let username1 = req.body.username;
   //if (username1 == null)
-    username1 = 'Akshay';
+  //username1 = 'Akshay';
   console.log(req.body);
   MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
     if (err) throw err

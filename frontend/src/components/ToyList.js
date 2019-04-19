@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import {ButtonContainer} from './Button';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
 import './ToyList.css';
-import Select from 'react-select';
+//import Select from 'react-select';
 
 
 export default class ToyList extends Component {
@@ -90,7 +90,7 @@ export default class ToyList extends Component {
     
     return (
       <React.Fragment>
-         <Navbar></Navbar>
+         <Navbar user={this.props.location.user}></Navbar>
         <div className="py-5">
         <div className="container">
         
