@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-//import logo from '.././Logo/logo.png';
 import styled from 'styled-components';
 import {ButtonContainer} from './Button';
+import {  Redirect } from 'react-router-dom';
+import ToyList from './ToyList';
 export default class Navbar extends Component {
     constructor(){
         super();
@@ -11,19 +12,14 @@ export default class Navbar extends Component {
   render() {
     return(
         <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
-       
         <ul className="navbar-nav align-items-center">
-        {/* <li>
-        <Link to="/">
-            <img src={logo} alt="toystore" className="navbar-brand"/>
-        </Link>
-        </li> */}
         <li>
             <Link to={{pathname: "/toylist",user: this.props.user}} className="nav-link">
                 Toys
             </Link>
         </li>
         </ul>
+       
         <Link to={{pathname: "/cart",user: this.props.user}} className="ml-auto">
         <ButtonContainer>
             <span className="mr-2">
