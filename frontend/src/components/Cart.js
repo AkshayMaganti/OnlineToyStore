@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import CartToy from './CartToy';
+import Toy from './Toy';
 import {ProductConsumer} from '../context';
 export default class extends Component {
   
@@ -17,7 +18,7 @@ export default class extends Component {
     // this.setState({
     //   username : this.props.location.state.username
     // });
-    console.log("the path name is ",this.props.location.pathname);
+    //console.log("calling cdm");
     fetch('/items',{
 			method: 'POST',
 			headers: {
@@ -30,55 +31,78 @@ export default class extends Component {
 		})
       .then(res => res.json())
       .then(res => res.map((item) => {
+        this.addToCart(item.id, item.quantity);
         let newItem = this.state.items;
         newItem.push(item); 
         this.setState({
           items : newItem
-        })
-      }));
+        });
+      }))
+      .then(
+        x => {
+          fetch('/products')
+          .then(res => res.json())
+          .then(res => res.map((item) => {
+            let newItem = this.state.products;
+            //console.log(newItem.pop());
+            newItem.push(item); 
+            this.setState({
+              products : newItem
+            });
+          }))
+          .then(x => {
+            this.loadCart();
+          });
+        }
+      );
 
+      // let x = this.state.products;
+      // console.log("x:",x);
+      // x.forEach( function(y){ console.log(y)});
+      // //console.log(this.state.items);
       
-      fetch('/products')
-      .then(res => res.json())
-      .then(res => res.map((item) => {
-        let newItem = this.state.products;
-        newItem.push(item); 
-        this.setState({
-          products : newItem
-        })
-      }));
-      console.log(this.state.products);
-      this.loadCart();
-      console.log(this.state.items);
   }
 
   loadCart = () => {
-    this.state.items.map((x) => {
-      this.addToCart(x.id, x.quantity);
-      console.log(x);
+    //console.log("Calling load cart.")
+    let newItems = this.state.items;
+    //console.log(newItems);
+    newItems.forEach((x) => {
+      //console.log(x.id);
+       this.addToCart(x.id, x.quantity);
+      
     });
     console.log(this.state.cart);
+    // const cartToys = this.state.cart.forEach(cartItem => {
+    //   <CartToy key={cartItem.id} cart ={cartItem} user={this.props.location.user}/>
+    // })
   }
 
-  getItem = (id) => {
-    const product = this.state.products.find(item => item.id == id);
+  getItem = (id,tempProducts) => {
+    //console.log("pid:",id);
+    //{id,title,company,category,price}
+    const product = tempProducts.find((item) => item.id === id);
+    //console.log("title:", title);
     return product;
   };
 
   addToCart = (id,quantity) => {
     let tempProducts = this.state.products;
-    console.log("temp products:", tempProducts);
-    const index = tempProducts.indexOf(this.getItem(id));
-    const product = tempProducts[index];
-    product.count = quantity;
-    const price = product.price;
-    const total = this.state.total + price;
-    let newCart = this.state.cart;
-    newCart.push(product);
-    this.setState({
-      cart:newCart,
-      total : total
-    });
+    //console.log("temp products:", tempProducts);
+    const index = tempProducts.indexOf(this.getItem(id,tempProducts));
+    //console.log("index:", index);
+    let product = tempProducts[index];
+    
+    if(product!=undefined){
+      product.quantity = quantity;
+      const price = product.price;
+      let newCart = this.state.cart;
+      newCart.push(product);
+      this.setState({
+        cart:newCart,
+        total : this.state.total + price
+      });
+    }
   };
 
   render() {
@@ -99,14 +123,14 @@ export default class extends Component {
         </div>
         
         <div className="row">
-        <ProductConsumer>
-          {value =>{
-           return value.cart.map(cart => {
-             return <CartToy key={cart.id} cart ={cart} user={this.props.location.user}/>
-           })
-
-          }}
-        </ProductConsumer>
+          <ProductConsumer>
+            {value =>{
+            return this.state.cart.map(product => {
+              console.log(product);
+              return <CartToy key={product.id} cart={product} user={this.props.location.user}/>
+            })
+            }}
+          </ProductConsumer>
         </div>
         </div>
         </div>
