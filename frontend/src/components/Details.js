@@ -4,14 +4,19 @@ import {Link} from 'react-router-dom';
 import {ButtonContainer} from './Button';
 import Navbar from './Navbar';
 export default class Details extends Component {
+  constructor(props)
+  {
+    super(props);
+  }
   render() {
+    const {id,company,img,info,price,title} = this.props.location.state.detailProduct;
     return (
       <React.Fragment>
       <Navbar></Navbar>
-      <ProductConsumer>
-        { value => {
-          const {id,company,img,info,price,title,inCart} = value.detailProduct;
-          return (
+      {/* <ProductConsumer>
+        { value => { */}
+          
+          {/* return ( */}
             <div classname="container py-5">
               <div className = "row">
                 <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
@@ -40,22 +45,21 @@ export default class Details extends Component {
                       <Link to="/toylist">
                           <ButtonContainer> back to products </ButtonContainer>
                       </Link>
-                      <ButtonContainer cart
+                      {/* <ButtonContainer cart
                       disabled={inCart?true:false}
                       onClick = {()=>{
                         value.addToCart(id);
                       }}
                       >
                         {inCart ? "inCart":"add to cart"}
-                      </ButtonContainer>
+                      </ButtonContainer> */}
                   </div>
                   </div>
                 </div>
               </div>
             
-          );
-        }}
-        </ProductConsumer>
+
+        {/* </ProductConsumer> */}
         </React.Fragment>
 
     )

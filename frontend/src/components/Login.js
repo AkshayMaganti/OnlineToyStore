@@ -3,7 +3,7 @@ import styles from './Login.module.css';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
 import {  Redirect } from 'react-router-dom';
 
-
+const UserContext = React.createContext();
 class Login extends Component {
 
 		constructor(){
@@ -31,7 +31,9 @@ class Login extends Component {
 		render(){
 			{ if (this.state.login === false && !this.state.isLoggedIn)
 			return (
-				
+			
+			<div>
+			<UserContext.Provider value={this.state.loggedInUser}>{this.props.children}</UserContext.Provider>
 			<div className = {styles.signup}>
 				<h2 className={styles.h2}>Sign Up</h2>
 				<Form  name="myForm" id="signUpForm" onSubmit={this.formHandler}>
@@ -63,6 +65,7 @@ class Login extends Component {
 					<p>Already a member? <a onClick={this.changeLogin}>Login</a></p>
 				</Form>
 				
+			</div>
 			</div>
 			
 		)
@@ -180,4 +183,5 @@ class Login extends Component {
 
 }
 
-export default Login;
+const UserConsumer = this.state.loggedInUser
+export  {UserConsumer,Login};

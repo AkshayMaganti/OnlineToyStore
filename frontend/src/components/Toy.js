@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { ProductConsumer } from "../context";
 export default class Product extends Component {
 
-  addToCart = (id,username) => {
+
+    state = {
+      detailProduct:this.props.product
+    };
+  
+  addToCart = (id) => {
     fetch('/addToCart',{
 			method: 'POST',
 			headers: {
@@ -17,6 +22,21 @@ export default class Product extends Component {
 			}),
 		})
   }
+
+  handleDetail = id =>{
+    let product = this.getItem(id);
+    console.log(product);
+    this.setState({
+      detailProduct : product
+    });
+    console.log(this.state.detailProduct);
+    };
+
+    getItem = (id) => {
+      const product = this.props.products.find((item) => item.id === id);
+      //console.log(this.props.products)
+      return product;
+    };
   render() {
     const { id, title, img, price, category } = this.props.product;
     const username = this.props.user;
@@ -28,9 +48,9 @@ export default class Product extends Component {
               return (
                 <div
                   className="img-container"
-                  //onClick={() => value.handleDetail(id)}
+                  onClick={() => this.handleDetail(id)}
                 >
-                  <Link to="/details">
+                  <Link to={{pathname:"/details", state:{detailProduct : this.state.detailProduct}}} >
                     <img src={img} alt="toy" className="card-img-top"/>
                   </Link>
                   <button

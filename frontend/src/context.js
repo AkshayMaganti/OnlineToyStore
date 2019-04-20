@@ -14,11 +14,11 @@ class ProductProvider extends Component {
   //};
 
 
-  componentDidMount() {
-    fetch('/products')
-      .then(res => res.json())
-      .then(products => this.setState({ products }));
-  }
+  // componentDidMount() {
+  //   fetch('/products')
+  //     .then(res => res.json())
+  //     .then(products => this.setState({ products }));
+  // }
 
 // setToys = () => {
 //   let tempProducts = [];
