@@ -3,6 +3,20 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { ProductConsumer } from "../context";
 export default class Product extends Component {
+
+  addToCart = (id,username) => {
+    fetch('/addToCart',{
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+        username : this.props.user,
+        id : id
+			}),
+		})
+  }
   render() {
     const { id, title, img, price, category } = this.props.product;
     const username = this.props.user;
@@ -14,7 +28,7 @@ export default class Product extends Component {
               return (
                 <div
                   className="img-container"
-                  onClick={() => value.handleDetail(id)}
+                  //onClick={() => value.handleDetail(id)}
                 >
                   <Link to="/details">
                     <img src={img} alt="toy" className="card-img-top"/>
@@ -23,8 +37,8 @@ export default class Product extends Component {
                     className="cart-btn"
                     
                     onClick={() => {
-                      value.addToCart(id);
-                      value.openModal(id);
+                      this.addToCart(id,username);
+                      //value.openModal(id);
                     }}
                   >
                     

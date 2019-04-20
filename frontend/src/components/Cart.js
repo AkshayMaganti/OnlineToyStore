@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import CartToy from './CartToy';
-import Toy from './Toy';
+//import Toy from './Toy';
 import {ProductConsumer} from '../context';
 export default class extends Component {
   

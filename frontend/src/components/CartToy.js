@@ -30,9 +30,10 @@ export default class CartToy extends Component {
               <span className="mr-1">$</span>
               {price}
             </h5>
-            <hr />
-             Quantity : {quantity}
+            <br />
+             
           </div>
+          Quantity : {quantity}
         </div>
       </ProductWrapper>
     );
