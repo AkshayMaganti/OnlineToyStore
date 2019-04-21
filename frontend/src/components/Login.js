@@ -32,8 +32,7 @@ class Login extends Component {
 			{ if (this.state.login === false && !this.state.isLoggedIn)
 			return (
 			
-			<div>
-			<UserContext.Provider value={this.state.loggedInUser}>{this.props.children}</UserContext.Provider>
+			
 			<div className = {styles.signup}>
 				<h2 className={styles.h2}>Sign Up</h2>
 				<Form  name="myForm" id="signUpForm" onSubmit={this.formHandler}>
@@ -66,7 +65,7 @@ class Login extends Component {
 				</Form>
 				
 			</div>
-			</div>
+			
 			
 		)
 		else if (this.state.login === true && !this.state.isLoggedIn)
@@ -183,5 +182,4 @@ class Login extends Component {
 
 }
 
-//const UserConsumer = this.state.loggedInUser;
 export  default Login;
