@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import {ButtonContainer} from './Button';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
 import './ToyList.css';
-import {UserConsumer} from './Login';
 //import Select from 'react-select';
 
 
@@ -64,11 +63,11 @@ export default class ToyList extends Component {
     const currentToys = products.slice(indexOfFirstToy, indexOfLastToy);
 
     const renderToys= currentToys.map(product => {
-      return  <Toy key={product.id} product ={product} products={this.state.products}/>;
+      return  <Toy key={product.id} product ={product} products={this.state.products} user={this.props.location.user}/>;
     });
 
     const rendersearched= this.state.searchlist.map(product => {
-      return  <Toy key={product.id} product ={product}/>;
+      return  <Toy key={product.id} product ={product} products={this.state.products} user={this.props.location.user}/>;
     });
 
     // Logic for displaying page numbers
@@ -103,7 +102,6 @@ export default class ToyList extends Component {
         <div className="row">
             <div className="col-10 mx-auto my-2 text-center text-blue">
             <h1 className="text-capitalize font-weight-bold">
-              {UserConsumer}
               Hello {this.props.location.user}!!
             </h1>
             <h1 className="text-capitalize font-weight-bold">

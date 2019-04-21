@@ -127,7 +127,7 @@ export default class extends Component {
             {value =>{
             return this.state.cart.map(product => {
               console.log(product);
-              return <CartToy key={product.id} cart={product} user={this.props.location.user}/>
+              return <CartToy key={product.id} cart={product} products={this.state.products} user={this.props.location.user}/>
             })
             }}
           </ProductConsumer>

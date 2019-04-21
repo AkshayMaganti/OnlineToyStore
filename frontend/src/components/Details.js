@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ProductConsumer } from '../context';
+//import { ProductConsumer } from '../context';
 import {Link} from 'react-router-dom';
 import {ButtonContainer} from './Button';
 import Navbar from './Navbar';
@@ -42,7 +42,7 @@ export default class Details extends Component {
                   </p>
                   <p className="text-muted lead">{info}</p>
                   <div>
-                      <Link to="/toylist">
+                      <Link to={{pathname:"/toylist", user:this.props.location.state.user}}>
                           <ButtonContainer> back to products </ButtonContainer>
                       </Link>
                       {/* <ButtonContainer cart

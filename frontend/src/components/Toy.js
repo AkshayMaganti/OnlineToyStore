@@ -34,7 +34,7 @@ export default class Product extends Component {
 
     getItem = (id) => {
       const product = this.props.products.find((item) => item.id === id);
-      //console.log(this.props.products)
+      console.log(this.props.user);
       return product;
     };
   render() {
@@ -50,7 +50,7 @@ export default class Product extends Component {
                   className="img-container"
                   onClick={() => this.handleDetail(id)}
                 >
-                  <Link to={{pathname:"/details", state:{detailProduct : this.state.detailProduct}}} >
+                  <Link to={{pathname:"/details", state:{detailProduct : this.state.detailProduct, user:this.props.user}}} >
                     <img src={img} alt="toy" className="card-img-top"/>
                   </Link>
                   <button

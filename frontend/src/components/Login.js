@@ -183,5 +183,5 @@ class Login extends Component {
 
 }
 
-const UserConsumer = this.state.loggedInUser
-export  {UserConsumer,Login};
+//const UserConsumer = this.state.loggedInUser;
+export  default Login;

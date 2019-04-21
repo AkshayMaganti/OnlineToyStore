@@ -4,6 +4,24 @@ import { Link } from "react-router-dom";
 import { ProductConsumer } from "../context";
 
 export default class CartToy extends Component {
+    state = {
+        detailProduct:this.props.cart
+    };
+
+    handleDetail = id =>{
+        let product = this.getItem(id);
+        console.log(product);
+        this.setState({
+            detailProduct : product
+        });
+        console.log(this.state.detailProduct);
+    };
+
+    getItem = (id) => {
+        const product = this.props.products.find((item) => item.id === id);
+        console.log(this.props.user);
+        return product;
+    };
   render() {
     const { id, title, img, price, category ,quantity} = this.props.cart;
 
@@ -15,10 +33,10 @@ export default class CartToy extends Component {
               return (
                 <div
                   className="img-container"
-                  onClick={() => value.handleDetail(id)}
+                  onClick={() => this.handleDetail(id)}
                 >
-                  <Link to="/details">
-                    <img src={img} alt="toy" className="card-img-top" />
+                  <Link to={{pathname:"/details", state:{detailProduct : this.state.detailProduct, user:this.props.user}}} >
+                    <img src={img} alt="toy" className="card-img-top"/>
                   </Link>
                 </div>
               );
