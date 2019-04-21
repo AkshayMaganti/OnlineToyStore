@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import Toy from './Toy';
 import Navbar from './Navbar';
 import {ButtonContainer} from './Button';
-import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
 import './ToyList.css';
-//import Select from 'react-select';
-
 
 export default class ToyList extends Component {
   constructor(props) {
