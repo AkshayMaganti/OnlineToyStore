@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-//import { ProductConsumer } from '../context';
 import {Link} from 'react-router-dom';
 import {ButtonContainer} from './Button';
 import Navbar from './Navbar';
@@ -8,15 +7,25 @@ export default class Details extends Component {
   {
     super(props);
   }
+  addToCart = (id) => {
+    fetch('/addToCart',{
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+        user : this.props.user,
+        id : id
+			})
+		})
+  }
+
   render() {
     const {id,company,img,info,price,title} = this.props.location.state.detailProduct;
     return (
       <React.Fragment>
       <Navbar></Navbar>
-      {/* <ProductConsumer>
-        { value => { */}
-          
-          {/* return ( */}
             <div classname="container py-5">
               <div className = "row">
                 <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
@@ -45,14 +54,15 @@ export default class Details extends Component {
                       <Link to={{pathname:"/toylist", user:this.props.location.state.user}}>
                           <ButtonContainer> back to products </ButtonContainer>
                       </Link>
-                      {/* <ButtonContainer cart
-                      disabled={inCart?true:false}
+                      <ButtonContainer cart
+                      //disabled={inCart?true:false}
                       onClick = {()=>{
-                        value.addToCart(id);
+                        this.addToCart(id);
                       }}
                       >
-                        {inCart ? "inCart":"add to cart"}
-                      </ButtonContainer> */}
+                      add to cart
+                      {/* //  {inCart ? "inCart":"add to cart"} */}
+                      </ButtonContainer>
                   </div>
                   </div>
                 </div>
