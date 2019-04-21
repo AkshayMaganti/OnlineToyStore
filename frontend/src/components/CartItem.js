@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 export default class CartItem extends Component {
+  constructor(props){
+    super(props);
+ }
   render() {
    
     const { id, title, img, price, quantity, total } = this.props.item;
@@ -37,9 +40,7 @@ export default class CartItem extends Component {
               <span className="btn btn-black mx-1">{quantity}</span>
               <span
                 className="btn btn-black mx-1"
-                // onClick={() => {
-                //   return increment(id);
-                // }}
+                onClick={() => this.props.increment}
               >
                 +
               </span>

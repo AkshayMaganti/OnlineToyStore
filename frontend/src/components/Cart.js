@@ -40,7 +40,6 @@ export default class extends Component {
           .then(res => res.json())
           .then(res => res.map((item) => {
             let newItem = this.state.products;
-            //console.log(newItem.pop());
             newItem.push(item); 
             this.setState({
               products : newItem
@@ -60,7 +59,6 @@ export default class extends Component {
        this.addToCart(x.id, x.quantity);
       
     });
-    console.log(this.state.cart);
   }
 
   getItem = (id,tempProducts) => {
