@@ -24,6 +24,12 @@ export default class ToyList extends Component {
     {
         this.loadproducts(e.target.value);
     }
+    else {
+      this.setState({
+        searchlist: []
+      });
+    }
+    
   }
 
   handleClick(event) {
@@ -96,7 +102,7 @@ export default class ToyList extends Component {
         <div className="py-5">
         <div className="container">
         
-          <input type="text" className="input mr-sm-2" placeholder="Search..." onBlur={this.handleBlur}/>
+          <input type="text" className="input mr-sm-2" placeholder="Search..." onChange={this.handleBlur}/>
 
           
         <div className="row">
