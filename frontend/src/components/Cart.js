@@ -4,6 +4,7 @@ import EmptyCart from './EmptyCart';
 import CartColumns from './CartColumns';
 import CartList from './CartList';
 import {ProductConsumer} from '../context';
+import {  Redirect } from 'react-router-dom';
 export default class extends Component {
   
   state={
@@ -15,6 +16,11 @@ export default class extends Component {
   
 
   componentDidMount() {
+    if(this.props.location.user === undefined) {
+      return (
+        <Redirect to={{pathname:"/"}} ></Redirect>
+        );
+    }
     fetch('/items',{
 			method: 'POST',
 			headers: {
@@ -84,13 +90,14 @@ export default class extends Component {
   };
 
   render() {
+        
          if (this.state.cart.length > 0) {
               return ( 
                 <React.Fragment>
                   <Navbar user={this.props.location.user}></Navbar>
                   <h1> Your Cart </h1>
                   <CartColumns />
-                  <CartList cart = {this.state.cart} />
+                  <CartList cart = {this.state.cart} user={this.props.location.user}/>
                   {/* <CartTotals value={value} history={this.props.history} /> */} 
                 </React.Fragment>
               );

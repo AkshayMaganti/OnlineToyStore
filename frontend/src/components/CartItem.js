@@ -5,7 +5,8 @@ export default class CartItem extends Component {
  }
   render() {
    
-    const { id, title, img, price, quantity, total } = this.props.item;
+    const { id, title, img, price, quantity } = this.props.item;
+    const total = price*quantity;
     // const { increment, decrement, removeItem } = this.props.value;
 
     return (
@@ -31,9 +32,7 @@ export default class CartItem extends Component {
             <div>
               <span
                 className="btn btn-black mx-1"
-                // onClick={() => {
-                //   return decrement(id);
-                // }}
+                onClick={() => this.props.decrement(id)}
               >
                 -
               </span>
@@ -49,7 +48,7 @@ export default class CartItem extends Component {
         </div>
         <div className="col-10 mx-auto col-lg-2 ">
           <div className=" cart-icon" >
-            <i className="fas fa-trash" />
+            <i className="fas fa-trash" onClick={() => this.props.remove(id)}/>
           </div>
         </div>
 

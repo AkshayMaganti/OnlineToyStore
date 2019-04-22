@@ -139,6 +139,7 @@ app.post('/items', function(req,res,next) {
     })
   })
 });
+
 //add to cart
 app.post('/addtocart', function(req,res,next) {
   let username1 = req.body.username;
@@ -155,7 +156,6 @@ app.post('/addtocart', function(req,res,next) {
     let obj = {
       username : username1,
     };
-    
     dbo.collection('cart').findOne(obj, function(err,result) {
       if (err) next(err);
       result1 = result.items;
@@ -166,7 +166,6 @@ app.post('/addtocart', function(req,res,next) {
           check = true;
         }
       });
-      
       if (check === false) {
         let obj1 = {
           id : id,
@@ -186,11 +185,34 @@ app.post('/addtocart', function(req,res,next) {
           //console.log(items2);
         });
       }
-      
       res.json(result1);
     });
   })
 });
+
+//updating the cart 
+app.post('/updatecart', function(req,res,next){
+  console.log(req.body.username);
+  console.log(req.body.items);
+  let user = req.body.username;
+  let items = req.body.items;
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) throw err
+    var dbo = db.db('test');
+    let obj = {
+      username : user,
+    };
+    let obj2 = {
+      username : user,
+      items : items
+    }
+    dbo.collection('cart').updateOne(obj, {$set : obj2}, function(err,result2) {
+      if (err) next(err);
+      console.log('updated');
+  })
+  });
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
