@@ -8,14 +8,14 @@ export default class Details extends Component {
     super(props);
   }
   addToCart = (id) => {
-    fetch('/addToCart',{
+    fetch('/addtocart',{
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-        user : this.props.user,
+        username : this.props.location.state.user,
         id : id
 			})
 		})
@@ -25,7 +25,7 @@ export default class Details extends Component {
     const {id,company,img,info,price,title} = this.props.location.state.detailProduct;
     return (
       <React.Fragment>
-      <Navbar></Navbar>
+      <Navbar user={this.props.location.state.user}></Navbar>
             <div classname="container py-5">
               <div className = "row">
                 <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
@@ -51,10 +51,10 @@ export default class Details extends Component {
                   </p>
                   <p className="text-muted lead">{info}</p>
                   <div>
-                      <Link to={{pathname:"/toylist", user:this.props.location.state.user}}>
+                      <Link to={{pathname:"/toylist", user : this.props.location.state.user}}>
                           <ButtonContainer> back to products </ButtonContainer>
                       </Link>
-                      <ButtonContainer cart
+                      <ButtonContainer 
                       //disabled={inCart?true:false}
                       onClick = {()=>{
                         this.addToCart(id);

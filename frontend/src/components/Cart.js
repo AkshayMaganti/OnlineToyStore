@@ -102,7 +102,7 @@ export default class extends Component {
                 </React.Fragment>
               );
             } else {
-              return <EmptyCart />;
+              return <EmptyCart user={this.props.location.user}></EmptyCart>;
              
             }
      

@@ -1,9 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 import Navbar from './Navbar';
-export default function EmptyCart() {
+export default class EmptyCart extends Component {
+  constructor(props) {
+    super(props);
+  
+  };
+  render(){
   return (
     <React.Fragment>
-    <Navbar></Navbar>
+    <Navbar user={this.props.user}></Navbar>
     <div className="container mt-5">
       <div className="row">
         <div className="col-10 mx-auto text-center text-title text-capitalize">
@@ -13,4 +18,5 @@ export default function EmptyCart() {
     </div>
     </React.Fragment>
   );
+}
 }

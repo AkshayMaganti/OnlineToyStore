@@ -47,10 +47,19 @@ app.post('/register', function(req,res){
       email : email,
       password : hash
     } 
+
+  let obj2 = {
+    username : username,
+    items : []
+  }
     dbo.collection('users').insertOne(obj, function(err,res) {
       if (err) throw err;
       db.close();
-    })
+    });
+    dbo.collection('cart').insertOne(obj2, function(err,res) {
+      if (err) throw err;
+      db.close();
+    });
   })
 })
 
@@ -79,9 +88,8 @@ app.post('/login', function(req,res){
             value : true,
             username : res1.username
           }
-          
-
-        } else {
+        } 
+        else {
           // Passwords don't match
           console.log(password1)
           console.log(res1.password)
@@ -95,7 +103,12 @@ app.post('/login', function(req,res){
         res.json(result);
       }
       else{
-        console.log("username doesnot exist")
+        result = {
+          value : false,
+          username : ''
+        }
+        console.log("username doesnot exist");
+        res.json(result);
       }
       
     });

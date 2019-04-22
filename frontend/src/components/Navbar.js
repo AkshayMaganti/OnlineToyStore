@@ -8,8 +8,15 @@ export default class Navbar extends Component {
     constructor(){
         super();
     };
-
+    
   render() {
+    let x = '';
+    if (this.props.user != undefined ){
+        x = 'logout'
+    }
+    else {
+        x = 'login'
+    }
     return(
         <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
         <ul className="navbar-nav align-items-center">
@@ -33,7 +40,8 @@ export default class Navbar extends Component {
             <span className="mr-2">
             <i className="fas "></i>
             </span>
-                Logout
+            
+                {x}
         </ButtonContainer>
         </Link>
         </NavWrapper>

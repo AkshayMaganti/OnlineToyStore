@@ -59,7 +59,7 @@ export default class CartList extends Component {
 				items : object ,
 			}),
     })
-    .then( res => <Redirect to={{pathname:"/toylist", user: this.props.user }}></Redirect>);
+    .then( res => {return <Redirect to={{pathname:"/toylist", user: this.props.user }}></Redirect>});
   }
   render() {
     const cart = this.props.cart;
