@@ -8,7 +8,8 @@ export default class Product extends Component {
     };
   
   addToCart = (id) => {
-    fetch('/addToCart',{
+
+    fetch('/addtocart',{
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -23,21 +24,17 @@ export default class Product extends Component {
 
   handleDetail = id =>{
     let product = this.getItem(id);
-    console.log(product);
     this.setState({
       detailProduct : product
     });
-    console.log(this.state.detailProduct);
     };
 
     getItem = (id) => {
       const product = this.props.products.find((item) => item.id === id);
-      console.log(this.props.user);
       return product;
     };
   render() {
     const { id, title, img, price, category } = this.props.product;
-    const username = this.props.user;
     return (
       <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
         <div className="card">
@@ -55,7 +52,7 @@ export default class Product extends Component {
                     className="cart-btn"
                     
                     onClick={() => {
-                      this.addToCart(id,username);
+                      this.addToCart(id);
                       //value.openModal(id);
                     }}
                   >

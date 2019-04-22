@@ -140,10 +140,15 @@ app.post('/items', function(req,res,next) {
   })
 });
 //add to cart
-app.post('/addToCart', function(req,res,next) {
+app.post('/addtocart', function(req,res,next) {
   let username1 = req.body.username;
-  //let id = req.body.id;
-  console.log(req.body);
+  let id = req.body.id;
+  let check = false;
+  let items2 = [];
+  let insert = {
+    username : '',
+    items : []
+  }
   MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
     if (err) throw err
     var dbo = db.db('test');
@@ -154,9 +159,33 @@ app.post('/addToCart', function(req,res,next) {
     dbo.collection('cart').findOne(obj, function(err,result) {
       if (err) next(err);
       result1 = result.items;
-      //console.log(json(result1));
+      items2 = result1;
+      result1.map(x => {
+        if (x.id === id){
+          check = true;
+        }
+      });
+      
+      if (check === false) {
+        let obj = {
+          id : id,
+          quantity : 1
+        };
+        items2.push(obj);
+        console.log(items2)
+        insert = {
+          username : username1,
+          items : items2
+        }
+        dbo.collection('cart').updateOne(obj,{$set : insert}, function(err,result2) {
+          if (err) next(err);
+          console.log('updated');
+          //console.log(items2);
+        });
+      }
+      
       res.json(result1);
-    })
+    });
   })
 });
 // catch 404 and forward to error handler
