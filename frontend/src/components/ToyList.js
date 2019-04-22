@@ -16,6 +16,18 @@ export default class ToyList extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
  
+  change = (e) => {
+    if(e.target.value != "default")
+    {
+        this.filterproducts(e.target.value);
+    }
+    else {
+      this.setState({
+        searchlist: []
+      });
+    }
+    
+  }
   handleBlur = (e) => {
     if(e.target.value != "")
     {
@@ -53,6 +65,21 @@ export default class ToyList extends Component {
       });
 
     }
+
+    filterproducts = (textValue) => {
+      let newList = [];
+      newList = this.state.products.filter(item => {
+          const item_lc = item.category.toLowerCase();
+          const search_val = textValue.toLowerCase();
+          return item_lc.includes(search_val);
+      });
+      this.setState({
+          searchlist: newList
+      });
+
+    }
+
+   
 
 
 
@@ -98,7 +125,11 @@ export default class ToyList extends Component {
          <Navbar user={this.props.location.user}></Navbar>
         <div className="py-5">
         <div className="container">
-        
+          <select onChange={this.change} value={this.state.value}>
+              <option value="default">Default</option>
+              <option value="Board games">Board Games</option>
+              <option value="toy car">Toy Car</option>
+          </select>
           <input type="text" className="input mr-sm-2" placeholder="Search..." onChange={this.handleBlur}/>
 
           
