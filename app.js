@@ -145,8 +145,8 @@ app.post('/addtocart', function(req,res,next) {
   let id = req.body.id;
   let check = false;
   let items2 = [];
-  let insert = {
-    username : '',
+  let insert2 = {
+    username : username1,
     items : []
   }
   MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
@@ -160,6 +160,7 @@ app.post('/addtocart', function(req,res,next) {
       if (err) next(err);
       result1 = result.items;
       items2 = result1;
+      console.log('before', result1);
       result1.map(x => {
         if (x.id === id){
           check = true;
@@ -167,19 +168,21 @@ app.post('/addtocart', function(req,res,next) {
       });
       
       if (check === false) {
-        let obj = {
+        let obj1 = {
           id : id,
           quantity : 1
         };
-        items2.push(obj);
+        items2.push(obj1);
         console.log(items2)
-        insert = {
+        insert2 = {
           username : username1,
           items : items2
         }
-        dbo.collection('cart').updateOne(obj,{$set : insert}, function(err,result2) {
+        console.log('after', items2);
+        dbo.collection('cart').updateOne(obj, {$set : insert2}, function(err,result2) {
           if (err) next(err);
-          console.log('updated');
+          console.log(insert2);
+          //console.log(result2);
           //console.log(items2);
         });
       }

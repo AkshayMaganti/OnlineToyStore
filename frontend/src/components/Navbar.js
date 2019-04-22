@@ -8,20 +8,13 @@ export default class Navbar extends Component {
     constructor(){
         super();
     };
-    load = () => {
-        if (window.location.href =='http://localhost:3000/toylist'){
-            //window.location.reload();
-            console.log('reloaded');
-        }
-            
-        return (<Redirect to={{pathname:"/toylist", user: this.props.user}} ></Redirect>);
-    }
+
   render() {
     return(
         <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
         <ul className="navbar-nav align-items-center">
         <li>
-            <Link to={{pathname: "/toylist",user: this.props.user}} onClick={() => this.load()} className="nav-link">
+            <Link to={{pathname: "/toylist",user: this.props.user}} className="nav-link">
                 Toys
             </Link>
         </li>

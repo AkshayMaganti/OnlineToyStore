@@ -87,7 +87,7 @@ export default class extends Component {
          if (this.state.cart.length > 0) {
               return ( 
                 <React.Fragment>
-                  <Navbar></Navbar>
+                  <Navbar user={this.props.location.user}></Navbar>
                   <h1> Your Cart </h1>
                   <CartColumns />
                   <CartList cart = {this.state.cart} />
