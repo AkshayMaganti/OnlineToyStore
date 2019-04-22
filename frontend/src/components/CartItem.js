@@ -40,7 +40,7 @@ export default class CartItem extends Component {
               <span className="btn btn-black mx-1">{quantity}</span>
               <span
                 className="btn btn-black mx-1"
-                onClick={() => this.props.increment}
+                onClick={() => this.props.increment({id})}
               >
                 +
               </span>

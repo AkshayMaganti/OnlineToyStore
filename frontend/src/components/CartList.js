@@ -6,9 +6,11 @@ export default class CartList extends Component {
     cart : this.props.cart
   }
   increment = (id) => {
-    const index = this.state.cart.indexOf(this.getItem(id));
+    let id1 = id.id;
+    const index = this.state.cart.indexOf(this.getItem(id1));
     let cartNew = this.state.cart;
     let product = cartNew[index];
+    console.log("inside cart");
     console.log(product);
     //product.quantity = product.quantity + 1;
     // this.setState({
@@ -16,7 +18,7 @@ export default class CartList extends Component {
     // })
   }
   getItem = (id) => {
-    const product = this.state.idcart.find((item) => item.id === id);
+    const product = this.state.cart.find((item) => item.id === id);
     return product;
   };
   render() {
@@ -24,7 +26,7 @@ export default class CartList extends Component {
     return (
       <div className="container-fluid">
         {cart.map(item => (
-          <CartItem key={item.id} item={item} increment={this.increment.bind(this,item.id)}/>
+          <CartItem key={item.id} item={item} increment={this.increment}/>
         ))}
       </div>
     );
