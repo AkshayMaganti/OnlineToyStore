@@ -60,6 +60,10 @@ app.post('/register', function(req,res){
       if (err) throw err;
       db.close();
     });
+    dbo.collection('history').insertOne(obj2, function(err,res) {
+      if (err) throw err;
+      db.close();
+    });
   })
 })
 
@@ -225,7 +229,67 @@ app.post('/updatecart', function(req,res,next){
   })
   });
 });
-
+//checkout
+app.post('/checkout', function(req,res,next){
+  let user = req.body.username;
+  let items = [];
+  let items2 = req.body.items;
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) throw err
+    var dbo = db.db('test');
+    let obj = {
+      username : user,
+    };
+    let obj2 = {
+      username : user,
+      items : items
+    }
+    let obj3 = {
+      username : user,
+      items : items2
+    }
+    dbo.collection('cart').updateOne(obj, {$set : obj2}, function(err,result2) {
+      if (err) next(err);
+      console.log('updated');
+   });
+   dbo.collection('history').findOne(obj, function(err, res2 ){
+    if (err) next(err);
+    console.log(items2);
+    res2.items.map((item) => items2.push(item));
+    obj3 = {
+      username : user,
+      items : items2
+    }
+      console.log(obj3)
+      dbo.collection('history').updateOne(obj, {$set : obj3}, function(err,result2) {
+      if (err) next(err);
+      console.log('history updated');
+      });
+   });
+   
+  });
+});
+//history
+app.post('/history', function(req,res,next) {
+  let username1 = req.body.username;
+  //if (username1 == null)
+  //username1 = 'Akshay';
+  console.log(req.body);
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) throw err
+    var dbo = db.db('test');
+    let obj = {
+      username : username1,
+    };
+    
+    dbo.collection('history').findOne(obj, function(err,result) {
+      if (err) next(err);
+      result1 = result.items;
+      //console.log(json(result1));
+      res.json(result1);
+    })
+  })
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
