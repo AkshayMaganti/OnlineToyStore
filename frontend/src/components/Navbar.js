@@ -27,7 +27,7 @@ export default class Navbar extends Component {
         x = 'login'
     }
     return(
-        <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
+        <NavWrapper className="navbar navbar-expand-sm navbar-dark ">
         <ul className="navbar-nav align-items-center">
         <li>
             <Link to={{pathname: "/toylist",user: auth.getSession()}} className="nav-link">
@@ -36,19 +36,19 @@ export default class Navbar extends Component {
         </li>
         </ul>
        
-        <Link to={{pathname: "/cart",user: auth.getSession()}} className="ml-auto">
+        <Link to={{pathname: "/cart",user: auth.getSession()}} className="ml-auto nav-link">
         <ButtonContainer>
-            <span className="mr-2">
-            <i className="fas fa-cart-plus"></i>
-            </span>
                 My Cart
         </ButtonContainer>
         </Link>
-        <ButtonContainer onClick={this.logout}>
-            <span className="mr-2">
-            <i className="fas "></i>
-            </span>
-            
+
+        <Link to={{pathname: "/history",user: auth.getSession()}} className="ml-auto nav-link">
+        <ButtonContainer>
+                History
+        </ButtonContainer>
+        </Link>
+
+        <ButtonContainer onClick={this.logout}>         
                 {x}
         </ButtonContainer>
         </NavWrapper>

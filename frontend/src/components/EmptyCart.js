@@ -20,11 +20,6 @@ export default class EmptyCart extends Component {
         <div className="col-10 mx-auto text-center text-title text-capitalize">
           <h1>your cart is currently empty</h1>
         </div>
-        <div>
-                <h2>Your history</h2>
-                 {this.props.history.map(item => (
-                  <HistItem key={item.id} item={item} /> ))}
-        </div>
       </div>
     </div>
     </React.Fragment>

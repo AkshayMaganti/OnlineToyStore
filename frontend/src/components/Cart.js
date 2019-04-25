@@ -5,7 +5,6 @@ import CartColumns from './CartColumns';
 import CartList from './CartList';
 import Auth from '../services/Auth';
 import {  Redirect } from 'react-router-dom';
-import HistItem from './HistItem';
 export default class extends Component {
   
   state={
@@ -42,57 +41,24 @@ export default class extends Component {
           items : newItem
         });
       }))
-      .then(
-        x => {
-          fetch('/products')
-          .then(res => res.json())
-          .then(res => res.map((item) => {
-            let newItem = this.state.products;
-            newItem.push(item); 
-            this.setState({
-              products : newItem,
-              histProducts: newItem
-            });
-          }))
-          .then(x => {
-            this.loadCart();
-            this.loadHistory();
-          });
-        }
-      )
-      .then(
-        y => {
-          fetch('/history',{
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              username : auth.getSession()
-            }),
-          })
-            .then(res => res.json())
-            .then(res => {res.map((item) => {
-              let newItem = this.state.histItems;
-              newItem.push(item); 
-              this.setState({
-                histItems : newItem
-              });
-            });
-            }
+      .then(x => {
+                fetch('/products')
+                .then(res => res.json())
+                .then(res => res.map((item) => {
+                  let newItem = this.state.products;
+                  newItem.push(item); 
+                  this.setState({
+                    products : newItem,
+                    histProducts: newItem
+                  });
+                }))
+                .then(x => {
+                  this.loadCart();
+                });
+              }
             )
         }
-      )
-      
-  }
 
-  loadHistory = () => {
-    let histtt = this.state.histItems;
-    histtt.forEach((y) => {
-      this.addToHistory(y.id, y.quantity);
-    })
-  }
   loadCart = () => {
     let newItems = this.state.items;
     newItems.forEach((x) => {
@@ -100,26 +66,7 @@ export default class extends Component {
       console.log(`id ${x.id} quan ${x.quantity}`)
     });
   }
-  addToHistory = (id, quantity) => {
-    let tempProducts = {};
-    tempProducts = this.state.histProducts;
-    const index = tempProducts.indexOf(this.getz(id));
-    let product = {};
-    product = tempProducts[index];
-    
-    if(product!=undefined){
-      product.quantity = quantity;
-      let hist = this.state.history;
-      hist.push(product);
-      this.setState({
-        history : hist
-      });
-    }
-  }
-  getz = (id) => {
-    const product = this.state.histProducts.find((item) => item.id === id);
-    return product;
-  }
+
   getItem = (id) => {
     const product = this.state.products.find((item) => item.id === id);
     return product;
@@ -128,24 +75,23 @@ export default class extends Component {
   addToCart = (id,quantity1) => {
     var tempProducts = [];
     tempProducts = this.state.products;
-    console.log("tempProducts -- ",tempProducts);
     const index = tempProducts.indexOf(this.getItem(id));
-    console.log("Index -- ",index);
     var product = {};
     product = tempProducts[index];
     console.log(product);
-    if(product!=undefined){
+    //if(product!=undefined){
       product.quantity = quantity1;
+      let product2 = product;
       console.log("quantity:",product.quantity);
-      console.log(product);
+      console.log(product2);
       const price = product.price;
       let newCart = this.state.cart;
-      newCart.push(product);
+      newCart.push(product2);
       this.setState({
         cart:newCart,
         total : this.state.total + price
       });
-    };
+    //};
   };
 
   render() {
@@ -157,18 +103,15 @@ export default class extends Component {
               return ( 
                 <React.Fragment>
                   <Navbar user={auth.getSession()}></Navbar>
-                  <h1> Your Cart </h1>
+                  <h1 className="text-center"> Your Cart </h1>
                   <CartColumns />
                   <CartList cart = {this.state.cart} user={auth.getSession()} products = {this.state.products}/>
                   {/* <CartTotals value={value} history={this.props.history} /> */} 
-                  <h2>Your history</h2>
-                  {this.state.history.map(item => (
-                  <HistItem key={item.id} item={item} /> ))}
                 </React.Fragment>
               );
             } else {
               return (
-                <EmptyCart user={auth.getSession()} history={this.state.history}></EmptyCart>
+                <EmptyCart user={auth.getSession()}></EmptyCart>
                 
               );
               

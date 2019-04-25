@@ -11,40 +11,49 @@ export default class CartList extends Component {
     cart : this.props.cart,
     items: [],
     products: this.props.products,
-    history: []
+    history: [],
+    total: 0
   }
   
   increment = (id) => {
     const index = this.state.cart.indexOf(this.getItem(id));
     let cartNew = this.state.cart;
     let product = cartNew[index];
+    let total = this.state.total;
     if (product.quantity < product.inventory){
       product.quantity = product.quantity + 1;
+      total = total + product.price;
     }
     else {
       alert(`We have only ${product.quantity} of ${product.title}`);
     }
     this.setState({
       cart : cartNew,
+      total : total
     });
   }
   decrement = (id) => {
     const index = this.state.cart.indexOf(this.getItem(id));
     let cartNew = this.state.cart;
     let product = cartNew[index];
+    let total = this.state.total;
     if (product.quantity > 1){ 
      product.quantity = product.quantity - 1;
+     total = total + product.price;
     }
     this.setState({
       cart : cartNew,
+      total : total
     });
   }
   remove = (id) => {
     const index = this.state.cart.indexOf(this.getItem(id));
     let cartNew = this.state.cart;
+    let total = this.state.total - (cartNew[index].price * cartNew[index].price);
     cartNew.splice(index,1);
     this.setState({
       cart : cartNew,
+      total : total
     });
   }
   getItem = (pid) => {
@@ -78,6 +87,7 @@ export default class CartList extends Component {
     let object = []
     cartNew.map((item) => {
       let temp = {"id" : item.id, "quantity" : item.quantity};
+      console.log(temp);
       object.push(temp);
     });
     fetch('/checkout',{
@@ -93,12 +103,13 @@ export default class CartList extends Component {
     })
     .then(res => {this.setState({
       cart : [],
-      items: []
+      items: [],
+      total : 0
       });
     });
   }
   render() {
-    const cart = this.props.cart;
+    const cart = this.state.cart;
     if(!auth.isAuthenticated())
       return <Redirect to="/" ></Redirect>;
     return (
@@ -106,7 +117,10 @@ export default class CartList extends Component {
         {cart.map(item => (
           <CartItem key={item.id} item={item} increment={this.increment} decrement={this.decrement} remove={this.remove}/>
         ))}
-        <div >
+        <div className="text-right">
+          <h3>Total: </h3>
+        </div>
+        <div className="text-center">
         
           <ButtonContainer onClick={this.updateCart}>
             <span className="mr-2" >
@@ -118,15 +132,15 @@ export default class CartList extends Component {
         </div>
         
         <Link to={{pathname: "/toylist"}}>
-        <div onClick={this.checkout}>
-          <ButtonContainer>
+        <div onClick={this.checkout} className="text-center">
+          <ButtonContainer >
             <span className="mr-2" >
             <i className="fas " ></i>
             </span>
                Checkout
         </ButtonContainer>
         </div>
-        </Link>
+        {/* </Link> */}
         {/* <h2>Your history</h2>
         {this.state.history.map(item => (
           <HistItem key={item.id} item={item} />

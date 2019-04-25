@@ -7,6 +7,7 @@ import ToyList from './components/ToyList';
 import Toy from './components/Toy';
 import Details from './components/Details';
 import Cart from './components/Cart';
+import History from './components/History';
 import Default from './components/Default';
 import Login from './components/Login';
 import './components/Login.module.css';
@@ -22,6 +23,7 @@ class App extends Component {
           <Route exact path="/toylist" component={ToyList} />
           <Route path="/details" component={Details} />
           <Route path="/cart" component={Cart} />
+          <Route path="/history" component={History} />
           <Route component={Default} />
         </Switch>
      </React.Fragment>
