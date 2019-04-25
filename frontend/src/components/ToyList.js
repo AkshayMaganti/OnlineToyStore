@@ -3,6 +3,7 @@ import Toy from './Toy';
 import Navbar from './Navbar';
 import {ButtonContainer} from './Button';
 import './ToyList.css';
+import Auth from '../services/Auth';
 
 export default class ToyList extends Component {
   constructor(props) {
@@ -92,12 +93,14 @@ export default class ToyList extends Component {
     const indexOfFirstToy = indexOfLastToy - numberperpage;
     const currentToys = products.slice(indexOfFirstToy, indexOfLastToy);
 
+    const auth = new Auth();
+
     const renderToys= currentToys.map(product => {
-      return  <Toy key={product.id} product ={product} products={this.state.products} user={this.props.location.user}/>;
+      return  <Toy key={product.id} product ={product} products={this.state.products} user={auth.getSession()}/>;
     });
 
     const rendersearched= this.state.searchlist.map(product => {
-      return  <Toy key={product.id} product ={product} products={this.state.products} user={this.props.location.user}/>;
+      return  <Toy key={product.id} product ={product} products={this.state.products} user={auth.getSession()}/>;
     });
 
     // Logic for displaying page numbers
@@ -122,7 +125,7 @@ export default class ToyList extends Component {
     
     return (
       <React.Fragment>
-         <Navbar user={this.props.location.user}></Navbar>
+         <Navbar user={auth.getSession()}></Navbar>
         <div className="py-5">
         <div className="container">
           <select onChange={this.change} value={this.state.value}>
@@ -136,7 +139,7 @@ export default class ToyList extends Component {
         <div className="row">
             <div className="col-10 mx-auto my-2 text-center text-blue">
             <h1 className="text-capitalize font-weight-bold">
-              Hello {this.props.location.user}!!
+              Hello {auth.getSession()}!!
             </h1>
             <h1 className="text-capitalize font-weight-bold">
                   Toys List

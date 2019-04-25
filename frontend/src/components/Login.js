@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import styles from './Login.module.css';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
 import {  Redirect } from 'react-router-dom';
+import Auth from '../services/Auth';
 
 export default class Login extends Component {
 
@@ -165,6 +166,8 @@ export default class Login extends Component {
 					isLoggedIn : res.value,
 					loggedInUser : res.username
 				 });
+				 let auth = new Auth();
+				 auth.setSession(res.username);
 			 }
 			 else
 			 	alert("Check your credentials");

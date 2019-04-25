@@ -4,14 +4,23 @@ import styled from 'styled-components';
 import {ButtonContainer} from './Button';
 import {  Redirect } from 'react-router-dom';
 import ToyList from './ToyList';
+import Auth from '../services/Auth';
+
+let auth = new Auth();
+
 export default class Navbar extends Component {
+
     constructor(){
         super();
     };
-    
+
+    logout(){
+        auth.logout();
+        window.location.reload();
+    }
   render() {
     let x = '';
-    if (this.props.user != undefined ){
+    if (auth.isAuthenticated() ){
         x = 'logout'
     }
     else {
@@ -21,13 +30,13 @@ export default class Navbar extends Component {
         <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
         <ul className="navbar-nav align-items-center">
         <li>
-            <Link to={{pathname: "/toylist",user: this.props.user}} className="nav-link">
+            <Link to={{pathname: "/toylist",user: auth.getSession()}} className="nav-link">
                 Toys
             </Link>
         </li>
         </ul>
        
-        <Link to={{pathname: "/cart",user: this.props.user}} className="ml-auto">
+        <Link to={{pathname: "/cart",user: auth.getSession()}} className="ml-auto">
         <ButtonContainer>
             <span className="mr-2">
             <i className="fas fa-cart-plus"></i>
@@ -35,15 +44,13 @@ export default class Navbar extends Component {
                 My Cart
         </ButtonContainer>
         </Link>
-        <Link to={{pathname: "/"}} className="ml-auto">
-        <ButtonContainer>
+        <ButtonContainer onClick={this.logout}>
             <span className="mr-2">
             <i className="fas "></i>
             </span>
             
                 {x}
         </ButtonContainer>
-        </Link>
         </NavWrapper>
     );
 

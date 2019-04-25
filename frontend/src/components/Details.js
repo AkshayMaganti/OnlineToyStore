@@ -18,7 +18,8 @@ export default class Details extends Component {
         username : this.props.location.state.user,
         id : id
 			})
-		})
+    });
+    alert("The item is successfully added to cart");
   }
 
   render() {

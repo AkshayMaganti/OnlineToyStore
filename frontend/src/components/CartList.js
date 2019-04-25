@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import CartItem from "./CartItem";
 import {ButtonContainer} from './Button';
 import {Link} from 'react-router-dom';
+import Auth from '../services/Auth';
 import {  Redirect } from 'react-router-dom';
-
+const auth = new Auth();
 export default class CartList extends Component {
   
   state = {
@@ -11,14 +12,6 @@ export default class CartList extends Component {
     items: [],
     products: this.props.products,
     history: []
-  }
-
-  componentDidMount() {
-    if(this.props.user === undefined) {
-      return (
-        <Redirect to={{pathname:"/"}} ></Redirect>
-        );
-    } 
   }
   
   increment = (id) => {
@@ -74,11 +67,10 @@ export default class CartList extends Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				username : this.props.user,
+				username : auth.getSession(),
 				items : object ,
 			}),
     })
-    .then( res => {return <Redirect to={{pathname:"/toylist", user: this.props.user }}></Redirect>});
   }
 
   checkout = () => {
@@ -95,34 +87,37 @@ export default class CartList extends Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				username : this.props.user,
+				username : auth.getSession(),
 				items : object ,
 			}),
     })
-    .then(res => this.setState({
-      cart : []
-    }));
+    .then(res => {this.setState({
+      cart : [],
+      items: []
+      });
+    });
   }
   render() {
     const cart = this.props.cart;
+    if(!auth.isAuthenticated())
+      return <Redirect to="/" ></Redirect>;
     return (
       <div className="container-fluid">
         {cart.map(item => (
           <CartItem key={item.id} item={item} increment={this.increment} decrement={this.decrement} remove={this.remove}/>
         ))}
-        <div onClick={this.updateCart}>
-        <Link to={{pathname: "/toylist",user: this.props.user}}>
+        <div >
         
-          <ButtonContainer>
+          <ButtonContainer onClick={this.updateCart}>
             <span className="mr-2" >
             <i className="fas " ></i>
             </span>
                 save changes to cart
         </ButtonContainer>
-        </Link>
+
         </div>
         
-        <Link to={{pathname: "/toylist",user: this.props.user}}>
+        <Link to={{pathname: "/toylist"}}>
         <div onClick={this.checkout}>
           <ButtonContainer>
             <span className="mr-2" >

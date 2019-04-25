@@ -9,8 +9,11 @@ import Details from './components/Details';
 import Cart from './components/Cart';
 import Default from './components/Default';
 import Login from './components/Login';
-import './components/Login.module.css'
+import './components/Login.module.css';
+import Auth from './services/Auth';
+
 class App extends Component {
+
   render() {
     return(
      <React.Fragment>  

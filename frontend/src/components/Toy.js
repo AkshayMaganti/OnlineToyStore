@@ -19,7 +19,8 @@ export default class Product extends Component {
         username : this.props.user,
         id : id
 			}),
-		})
+    })
+    .then(res => alert("The item is successfully added to cart"));
   }
 
   handleDetail = id =>{
