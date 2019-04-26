@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-
+import form from './components/form';
 const ProductContext = React.createContext();
 
 class ProductProvider extends Component {
@@ -56,12 +55,34 @@ class ProductProvider extends Component {
   //     });
   // };
 
+  deleteProduct = id =>{
+    console.log("delete",id);
+    fetch('/products/'+id+'',{
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+       id1:id,
+      }),
+      }).then(alert("succesfully deleted the product"))
+   };
+   
+     
+   editProduct = id =>{
+     console.log("edit",id);
+     return (<form />);
+    };
+    
   render() {
     return (
       <ProductContext.Provider value={{
           ...this.state,
           handleDetail:this.handleDetail,
-          addToCart:this.addToCart
+          addToCart:this.addToCart,
+          deleteProduct:this.deleteProduct,
+          editProduct:this.editProduct
       }}>
         {this.props.children}
       </ProductContext.Provider>

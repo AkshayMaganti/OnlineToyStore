@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import {ButtonContainer} from './Button';
 import Navbar from './Navbar';
+import Auth from '../services/Auth';
+import { ProductConsumer } from '../context';
+const auth = new Auth();
 export default class Details extends Component {
   constructor(props)
   {
@@ -23,7 +26,7 @@ export default class Details extends Component {
   }
 
   render() {
-    const {id,company,img,info,price,title} = this.props.location.state.detailProduct;
+    const {id,company,img,info,price,title,category,inventory} = this.props.location.state.detailProduct;
     return (
       <React.Fragment>
       <Navbar user={this.props.location.state.user}></Navbar>
@@ -65,6 +68,29 @@ export default class Details extends Component {
                       {/* //  {inCart ? "inCart":"add to cart"} */}
                       </ButtonContainer>
                   </div>
+                  <ProductConsumer>
+                    { value => {
+                  return (
+                          <div>
+                              <br></br>
+                              {auth.isAdmin() ? <Link to={"/form/"+price+"/"+id+"/"+title+"/"+inventory+"/"+company+"/"+category+""} params={{ price: price , id:id ,title:title,inventory:inventory,company:company,category:category}}>
+                              <ButtonContainer>{"Edit"}</ButtonContainer>
+                              </Link>
+                            :<p></p>
+                            }
+                            {auth.isAdmin()  ? <ButtonContainer
+                            onClick = {()=>{
+                              value.deleteProduct(id);
+                            }}
+                            >
+                            {"Delete"}
+                            </ButtonContainer>
+                                  :<p></p>
+                          }
+                          </div>
+                      );
+                    }}
+                </ProductConsumer>
                   </div>
                 </div>
               </div>

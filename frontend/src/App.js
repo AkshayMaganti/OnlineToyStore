@@ -11,6 +11,8 @@ import History from './components/History';
 import Default from './components/Default';
 import Login from './components/Login';
 import './components/Login.module.css';
+import form from './components/form';
+import form1 from './components/newform';
 import Auth from './services/Auth';
 
 class App extends Component {
@@ -24,7 +26,10 @@ class App extends Component {
           <Route path="/details" component={Details} />
           <Route path="/cart" component={Cart} />
           <Route path="/history" component={History} />
+          <Route path="/form/:price/:id/:title/:inventory/:company/:category" component={form} />
+          <Route path="/newform" component={form1} />
           <Route component={Default} />
+
         </Switch>
      </React.Fragment>
     );

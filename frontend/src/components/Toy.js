@@ -35,7 +35,7 @@ export default class Product extends Component {
       return product;
     };
   render() {
-    const { id, title, img, price, category } = this.props.product;
+    const { id, title, img, price, category , company} = this.props.product;
     return (
       <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
         <div className="card">

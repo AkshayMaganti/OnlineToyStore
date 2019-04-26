@@ -1,11 +1,10 @@
-import React,{ Component } from 'react';
+import React,{ Component,PropTypes } from 'react';
 import styles from './Login.module.css';
 import {FormControl, FormGroup, Button, Form} from 'react-bootstrap';
 import {  Redirect } from 'react-router-dom';
 import Auth from '../services/Auth';
-
+import styled from "styled-components";
 export default class Login extends Component {
-
 		constructor(){
 			super();
 			this.state = {
@@ -17,27 +16,41 @@ export default class Login extends Component {
 					pwd : ''
 				},
 				login : true,
+				adminLogin:false,
 				loginFields : {
 					username : '',
 					password : ''
 				},
+				loginAdminFields:{
+					username:'',
+					password:''
+				},
+				errors:{
+					fname:'',
+					username:'',
+					email:'email format should be xxx@xxx.xxx',
+					pwd:'',
+					repwd:'',
+					password_strength:'',
+					password_check:''
+				},
 				isLoggedIn : false,
-				loggedInUser : ''
+				loggedInUser : '',
+				isAdmin:false
 			}
-
 		}	
-		
 
 		render(){
-			{ if (this.state.login === false && !this.state.isLoggedIn)
+			{ if (this.state.login === false && !this.state.isLoggedIn && !this.state.isAdmin &&!this.state.adminLogin)
 			return (
 			<div className = {styles.signup}>
 				<h2 className={styles.h2}>Sign Up</h2>
 				<Form  name="myForm" id="signUpForm" onSubmit={this.formHandler}>
-						
 					<FormGroup className={styles.formgroup}>
 						<FormControl type="name" className={[styles.formcontrol,styles.name1]} placeholder="First Name" name="fname" onChange={this.inputChangeHandler}  />
-						<FormControl type="name" className={[styles.formcontrol,styles.name2]} placeholder="Last Name" name="lname" onChange={this.inputChangeHandler} />
+						<p>{this.state.formFields.fname.length<1?this.state.errors.fname:""}</p>
+
+						<FormControl type="name" className={styles.formcontrol} placeholder="Last Name" name="lname" onChange={this.inputChangeHandler} />
 					</FormGroup>
 					<FormGroup className={styles.formgroup}>
 						<FormControl type="name" className={styles.formcontrol} placeholder="Username" name="username" onChange={this.inputChangeHandler}/>
@@ -45,6 +58,8 @@ export default class Login extends Component {
 					<FormGroup className={styles.formgroup}>
 						<FormControl type="email" className={styles.formcontrol} placeholder="Email" name="email" onChange={this.inputChangeHandler}/>
 					</FormGroup>
+					<p>{this.state.errors.email?this.state.errors.email:""}</p>
+
 					<FormGroup className={styles.formgroup}>        
 						<FormControl type="password" className={styles.formcontrol} placeholder="Password" name="pwd" onChange={this.inputChangeHandler}/>
 					</FormGroup>
@@ -61,12 +76,10 @@ export default class Login extends Component {
 					</FormGroup>
 					<p>Already a member? <a onClick={this.changeLogin}>Login</a></p>
 				</Form>
-				
 			</div>
 			
-			
 		)
-		else if (this.state.login === true && !this.state.isLoggedIn)
+		else if (this.state.login === true && !this.state.isLoggedIn && !this.state.isAdmin && !this.state.adminLogin)
 			return (
 			<div className = {styles.signup}>
 				<h2 className={styles.h2}>Login</h2>
@@ -81,19 +94,43 @@ export default class Login extends Component {
 						<Button type="submit" className="btn btn-primary">Login</Button>
 					</FormGroup>
 					<p>Not a member? <a onClick={this.changeLogin}>Sign Up</a></p>
+					<p>Are you a admin? <a onClick={this.changeAdminLogin}>Login as admin</a></p>
 				</Form>
-		
 			</div>
 			)
-		else if (this.state.isLoggedIn)
-		{		
-				return (
-				<Redirect to={{pathname:"/toylist", user: this.state.loggedInUser }} >{this.state.loggedInUser}</Redirect>
-				);
+
+			else if(this.state.adminLogin && !this.state.isAdmin)
+			return(
+				<div className = {styles.signup}>
+				<h2 className={styles.h2}>Login as admin</h2>
+				<Form  name="adminForm"  id ="adminForm" onSubmit={this.loginAdminHandler}>
+					<FormGroup className={styles.formgroup}>
+						<FormControl type="text" className={styles.formcontrol} placeholder="Username" name="username" onChange={this.inputChangeHandler3} />
+					</FormGroup>
+					<FormGroup className={styles.formgroup}>        
+						<FormControl type="password" className={styles.formcontrol} placeholder="Password" name="password" onChange={this.inputChangeHandler3}/>
+					</FormGroup>
+					<FormGroup className={styles.formgroup}>        
+						<Button type="submit" className="btn btn-primary">Login</Button>
+					</FormGroup>
+					<p>Are you a user? <a onClick={this.changeUserLogin}>Login as user</a></p>
+
+
+					<p>{this.state.isAdmin?"chandana":""}</p>
+					<input type="text" className={(this.state.isAdmin?styles.demo:styles.FormControl)}></input>
+					<button className={"badge " +(!this.state.isAdmin ? "badge-primary " : "badge-danger ") + " m-4"}>
+					Demo</button>
+				
+				
+				
+				</Form>
+			</div>
+			)
+		else if (this.state.isLoggedIn || this.state.isAdmin)
+				return (<Redirect to={{pathname:"/toylist", user: this.state.loggedInUser,isAdmin:this.state.isAdmin }} >{this.state.loggedInUser}</Redirect>);
 		}
-	}
-	
 	};
+				
 				
 	// keeps updating the state values in signup
 	inputChangeHandler = e => {
@@ -113,7 +150,14 @@ export default class Login extends Component {
 		});
 		
 	}
-
+	//admin form updation
+	inputChangeHandler3 = e => {
+		let loginAdminFields = {...this.state.loginAdminFields};
+		loginAdminFields[e.target.name] = e.target.value;
+		this.setState({
+			loginAdminFields
+		});	
+	}
 	//calls the api on submitting the form
 	
 	formHandler = e => {
@@ -167,20 +211,66 @@ export default class Login extends Component {
 					loggedInUser : res.username
 				 });
 				 let auth = new Auth();
-				 auth.setSession(res.username);
+				 auth.setSession(res.username, false);
 			 }
 			 else
 			 	alert("Check your credentials");
-		});
-			
-			
-			
+		});	
+	}
+	//admin login handler
+	loginAdminHandler = e => {
+		e.preventDefault();
+		//clears the form
+		let form = document.getElementById("adminForm");
+		//form.reset();
+		fetch('/adminlogin',{
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				username1 : this.state.loginAdminFields.username ,
+				password1 : this.state.loginAdminFields.password ,
+			}),
+		})
+		.then(res => res.json())
+		.then( (res) => {
+			this.setState({
+				loginAdminFields : {
+					username : '',
+					password : ''
+				},
+			});
+			 if (res.value === true){
+				this.setState({
+					isAdmin : res.value
+				});
+				let auth = new Auth();
+				auth.setSession(res.username, true);
+
+			 }
+			 else
+			 	alert("Check your credentials");
+		});		
 	}
 	//used to change the view between login and signup
 	changeLogin = (e) => {
 		var x = this.state.login;
 		this.setState({
 			login : !(x)
+		})
+	}
+	changeUserLogin = (e) =>{
+		this.setState({
+			adminLogin:false,
+			login:true
+		})
+	}
+	changeAdminLogin = (e) => {
+		var x = this.state.adminLogin;
+		this.setState({
+			adminLogin : !(x)
 		})
 	}
 

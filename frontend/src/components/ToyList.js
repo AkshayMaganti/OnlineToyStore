@@ -3,8 +3,9 @@ import Toy from './Toy';
 import Navbar from './Navbar';
 import {ButtonContainer} from './Button';
 import './ToyList.css';
+import {Link} from 'react-router-dom';
 import Auth from '../services/Auth';
-
+const auth = new Auth();
 export default class ToyList extends Component {
   constructor(props) {
     super(props);
@@ -52,6 +53,7 @@ export default class ToyList extends Component {
     fetch('/products')
       .then(res => res.json())
       .then(products => this.setState({ products }));
+    console.log(auth.isAdmin());
   }
 
   loadproducts = (textValue) => {
@@ -93,7 +95,7 @@ export default class ToyList extends Component {
     const indexOfFirstToy = indexOfLastToy - numberperpage;
     const currentToys = products.slice(indexOfFirstToy, indexOfLastToy);
 
-    const auth = new Auth();
+    
 
     const renderToys= currentToys.map(product => {
       return  <Toy key={product.id} product ={product} products={this.state.products} user={auth.getSession()}/>;
@@ -155,6 +157,11 @@ export default class ToyList extends Component {
         <div className="row">
         {renderToys}
         </div>
+          {auth.isAdmin() ? <Link to="/newform">
+          <ButtonContainer>{"Add a new Product"}</ButtonContainer>
+          </Link>
+          :<p></p>
+          } 
         <div className="card-footer">
         <ul id="page-numbers">
           {renderPageNumbers}

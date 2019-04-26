@@ -290,6 +290,133 @@ app.post('/history', function(req,res,next) {
     })
   })
 });
+
+//add a product by admin
+app.post('/product', function(req,res){
+  console.log(req.body);
+  let title = req.body.title;
+  let price = req.body.price;
+  let img=req.body.img;
+  let company=req.body.company;
+  let category = req.body.category;
+  let inventory = req.body.inventory;
+  //connecting to mongo db
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) next(err);
+    let dbo = db.db('test')
+    let length = 0;
+    dbo.collection('products').find().toArray(function (err, result) {
+      result.forEach((item) => {
+        length = Math.max(length,item.id);
+      })
+      let obj = {
+        id : length+1,
+        title : title,
+        img:img,
+        price : price,
+        company:company,
+        category:category,
+        inventory:inventory
+      } 
+      dbo.collection('products').insertOne(obj, function(err,res) {
+        if (err) throw err;
+        db.close();
+      })
+    });
+    
+  })
+})
+//admin login
+app.post('/adminlogin', function(req,res){
+  let username1 = req.body.username1;
+  let password1 = req.body.password1;
+  console.log(req.body)
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) console.log("no username found")
+    let dbo = db.db('test')
+    let obj = {
+      username : username1,
+    };
+    let result = {
+      value : true,
+      username : ''
+    } 
+    dbo.collection('admin').findOne(obj, function(err,res1) {
+      if (err) next(err);
+      //check if username exists by checking if we get any response
+      if (res1 !== null){
+        if(bcrypt.compareSync(password1, res1.password)) {
+          // Passwords match
+          result = {
+            value : true,
+            username : res1.username
+          }
+        } else {
+          // Passwords don't match
+          console.log(password1)
+          console.log(res1.password)
+          console.log("password doesn't match")
+          result = {
+            value : false,
+            username : res1.username
+          }
+        }
+        db.close();
+        res.json(result);
+      }
+      else{
+        console.log("username doesnot exist")
+      }
+    });
+  });
+})
+//delete a product
+app.delete('/products/:i', function(req, res){
+  var monk = require('monk');
+  var db = monk('localhost:27017/test');
+    var collection = db.get('products');
+    
+
+    collection.remove({ id: req.params.i }, function(err, product){
+        if (err) throw err;
+    });
+  });
+  
+
+//update a product
+app.put('/products/:i', function(req, res){
+  let obj1 = {
+    id : parseInt(req.body.id)
+  }
+  
+  let obj = {
+    price:req.body.price,
+    title:req.body.title,
+    id:parseInt(req.body.id),
+    company:req.body.company,
+    img:req.body.img,
+    inventory: req.body.inventory
+  }
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    let dbo = db.db('test');
+    console.log(obj1);
+    console.log(obj);
+    dbo.collection('products').updateOne(obj1,{$set : obj}, function(err, res){
+      console.log('updated');
+    });
+  })
+});
+//get product
+app.get('/:i', function(req, res) {
+  var monk = require('monk');
+var db = monk('localhost:27017/test');
+  
+    var collection = db.get('products');
+    collection.findOne({id:req.params.i}, function(err, product){
+        if (err) throw err;
+      	res.json(product);
+    });
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

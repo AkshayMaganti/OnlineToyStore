@@ -117,34 +117,30 @@ export default class CartList extends Component {
         {cart.map(item => (
           <CartItem key={item.id} item={item} increment={this.increment} decrement={this.decrement} remove={this.remove}/>
         ))}
-        <div className="text-right">
-          <h3>Total: </h3>
-        </div>
-        <div className="text-center">
-        
-          <ButtonContainer onClick={this.updateCart}>
-            <span className="mr-2" >
-            <i className="fas " ></i>
-            </span>
-                save changes to cart
-        </ButtonContainer>
+          <div className="text-right">
+            <h3>Total: </h3>
+          </div>
+          <div className="text-center">
+          
+            <ButtonContainer onClick={this.updateCart}>
+              <span className="mr-2" >
+              <i className="fas " ></i>
+              </span>
+                  save changes to cart
+          </ButtonContainer>
 
-        </div>
+          </div>
         
-        <Link to={{pathname: "/toylist"}}>
-        <div onClick={this.checkout} className="text-center">
-          <ButtonContainer >
-            <span className="mr-2" >
-            <i className="fas " ></i>
-            </span>
-               Checkout
-        </ButtonContainer>
-        </div>
-        {/* </Link> */}
-        {/* <h2>Your history</h2>
-        {this.state.history.map(item => (
-          <HistItem key={item.id} item={item} />
-        ))} */}
+          <Link to={{pathname: "/toylist"}}>
+          <div onClick={this.checkout} className="text-center">
+            <ButtonContainer >
+              <span className="mr-2" >
+              <i className="fas " ></i>
+              </span>
+                Checkout
+          </ButtonContainer>
+          </div>
+          </Link>
       </div> 
     );
   }
