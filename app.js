@@ -417,6 +417,25 @@ var db = monk('localhost:27017/test');
       	res.json(product);
     });
 });
+//update inventory after checkout
+app.post('/updateinventory', function(req,res){
+  console.log(req.body);
+  let products = req.body.products;
+  //connecting to mongo db
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) next(err);
+    let dbo = db.db('test')
+    products.forEach((product) => {
+      let obj1 = {
+        "title" : product.title
+      }
+      dbo.collection('products').updateOne(obj1,{$set : product}, function(err, res){
+        console.log('updated inventory');
+      });
+    })
+    
+  })
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

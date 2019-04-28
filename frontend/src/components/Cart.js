@@ -14,6 +14,7 @@ export default class extends Component {
     items: [],
     histItems: [],
     history: [],
+    total: 0
   };
   
 
@@ -63,7 +64,6 @@ export default class extends Component {
     let newItems = this.state.items;
     newItems.forEach((x) => {
        this.addToCart(x.id, x.quantity);
-      console.log(`id ${x.id} quan ${x.quantity}`)
     });
   }
 
@@ -78,18 +78,14 @@ export default class extends Component {
     const index = tempProducts.indexOf(this.getItem(id));
     var product = {};
     product = tempProducts[index];
-    console.log(product);
     //if(product!=undefined){
       product.quantity = quantity1;
       let product2 = product;
-      console.log("quantity:",product.quantity);
-      console.log(product2);
       const price = product.price;
       let newCart = this.state.cart;
       newCart.push(product2);
       this.setState({
         cart:newCart,
-        total : this.state.total + price
       });
     //};
   };
@@ -105,7 +101,7 @@ export default class extends Component {
                   <Navbar user={auth.getSession()}></Navbar>
                   <h1 className="text-center"> Your Cart </h1>
                   <CartColumns />
-                  <CartList cart = {this.state.cart} user={auth.getSession()} products = {this.state.products}/>
+                  <CartList cart = {this.state.cart} user={auth.getSession()} products = {this.state.products} />
                   {/* <CartTotals value={value} history={this.props.history} /> */} 
                 </React.Fragment>
               );

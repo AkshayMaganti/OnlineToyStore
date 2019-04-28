@@ -53,7 +53,6 @@ export default class ToyList extends Component {
     fetch('/products')
       .then(res => res.json())
       .then(products => this.setState({ products }));
-    console.log(auth.isAdmin());
   }
 
   loadproducts = (textValue) => {

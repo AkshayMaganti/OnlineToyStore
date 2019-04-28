@@ -52,7 +52,7 @@ class EditForm extends Component {
 								</table>
 
 							</div>
-							<Button type="submit" className="btn btn-primary">Save</Button>
+								<Button type="submit" className="btn btn-primary">Save</Button>
 							</Form>
               </div>
 		)
@@ -98,7 +98,8 @@ class EditForm extends Component {
 			});
 			//clears the form
 			let form = document.getElementById("editForm");
-			form.reset();	
+			form.reset();
+			this.props.history.push("/toylist");	
 		}
 }
 

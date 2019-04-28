@@ -36,21 +36,26 @@ export default class Navbar extends Component {
         </li>
         </ul>
        
+         
+        {!(auth.isAdmin()) ?   
         <Link to={{pathname: "/cart",user: auth.getSession()}} className="ml-auto nav-link">
-        <ButtonContainer>
-                My Cart
-        </ButtonContainer>
+            <ButtonContainer>
+                    {"My Cart"}
+            </ButtonContainer>
         </Link>
-
+        : <p></p>}
+        {!(auth.isAdmin()) ? 
         <Link to={{pathname: "/history",user: auth.getSession()}} className="ml-auto nav-link">
-        <ButtonContainer>
-                History
-        </ButtonContainer>
-        </Link>
-
-        <ButtonContainer onClick={this.logout}>         
+            <ButtonContainer>
+                    {"History"}
+            </ButtonContainer>
+        </Link> 
+        : <p></p>}
+        <div className="text-right">
+        <ButtonContainer onClick={this.logout} className="ml-auto nav-link">         
                 {x}
         </ButtonContainer>
+        </div>
         </NavWrapper>
     );
 

@@ -1,3 +1,4 @@
+   
 import React, { Component } from "react";
 import CartItem from "./CartItem";
 import {ButtonContainer} from './Button';
@@ -14,6 +15,11 @@ export default class CartList extends Component {
     history: [],
     total: 0
   }
+
+  componentDidMount(){
+    
+  };
+
   
   increment = (id) => {
     const index = this.state.cart.indexOf(this.getItem(id));
@@ -22,7 +28,7 @@ export default class CartList extends Component {
     let total = this.state.total;
     if (product.quantity < product.inventory){
       product.quantity = product.quantity + 1;
-      total = total + product.price;
+      total = total + parseInt(product.price);
     }
     else {
       alert(`We have only ${product.quantity} of ${product.title}`);
@@ -31,6 +37,7 @@ export default class CartList extends Component {
       cart : cartNew,
       total : total
     });
+    this.render();
   }
   decrement = (id) => {
     const index = this.state.cart.indexOf(this.getItem(id));
@@ -39,7 +46,7 @@ export default class CartList extends Component {
     let total = this.state.total;
     if (product.quantity > 1){ 
      product.quantity = product.quantity - 1;
-     total = total + product.price;
+     total = total - parseInt(product.price);
     }
     this.setState({
       cart : cartNew,
@@ -49,7 +56,7 @@ export default class CartList extends Component {
   remove = (id) => {
     const index = this.state.cart.indexOf(this.getItem(id));
     let cartNew = this.state.cart;
-    let total = this.state.total - (cartNew[index].price * cartNew[index].price);
+    let total = this.state.total - parseInt(parseInt(cartNew[index].quantity) * parseInt(cartNew[index].price));
     cartNew.splice(index,1);
     this.setState({
       cart : cartNew,
@@ -80,15 +87,28 @@ export default class CartList extends Component {
 				items : object ,
 			}),
     })
+    .then(res => window.alert("Changes have been saved"));
   }
 
   checkout = () => {
     let cartNew = this.state.cart;
-    let object = []
+    console.log(cartNew);
+    let object = [];
+    let object2 = []
     cartNew.map((item) => {
       let temp = {"id" : item.id, "quantity" : item.quantity};
-      console.log(temp);
       object.push(temp);
+    });
+    cartNew.map((item) => {
+      let temp = {"id" : item.id, 
+                  "title" : item.title,
+                  "company" : item.company,
+                  "category" : item.category,
+                  "inventory" : (item.inventory - item.quantity),
+                  "price" : item.price,
+                  "img" : item.img
+                };
+      object2.push(temp);
     });
     fetch('/checkout',{
 			method: 'POST',
@@ -107,18 +127,33 @@ export default class CartList extends Component {
       total : 0
       });
     });
+    fetch('/updateinventory',{
+      method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				products : object2
+			}),
+    })
   }
   render() {
     const cart = this.state.cart;
+    
     if(!auth.isAuthenticated())
       return <Redirect to="/" ></Redirect>;
+    this.state.total = 0;
+    cart.forEach(x =>{
+      this.state.total += parseInt(x.quantity) * parseInt(x.price)
+    })
     return (
       <div className="container-fluid">
         {cart.map(item => (
           <CartItem key={item.id} item={item} increment={this.increment} decrement={this.decrement} remove={this.remove}/>
         ))}
           <div className="text-right">
-            <h3>Total: </h3>
+            <h3>Total: </h3> ${this.state.total}
           </div>
           <div className="text-center">
           
