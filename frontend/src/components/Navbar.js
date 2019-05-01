@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import {ButtonContainer} from './Button';
 import {  Redirect } from 'react-router-dom';
 import ToyList from './ToyList';
+import createHistory from 'history/createBrowserHistory';
 import Auth from '../services/Auth';
 
 let auth = new Auth();
-
+const history = createHistory();
 export default class Navbar extends Component {
 
     constructor(){
@@ -16,7 +17,11 @@ export default class Navbar extends Component {
 
     logout(){
         auth.logout();
-        window.location.reload();
+        if (window.location.pathname == "/toylist"){
+            history.push("/");
+        }
+        else 
+            window.location.reload();
     }
   render() {
     let x = '';

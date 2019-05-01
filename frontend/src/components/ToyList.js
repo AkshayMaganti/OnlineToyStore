@@ -96,6 +96,7 @@ export default class ToyList extends Component {
     
 
     const renderToys= currentToys.map(product => {
+      if (product.inventory > 0 || auth.isAdmin() )
       return  <Toy key={product.id} product ={product} products={this.state.products} user={auth.getSession()}/>;
     });
 

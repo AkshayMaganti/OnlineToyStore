@@ -370,6 +370,7 @@ app.post('/adminlogin', function(req,res){
     });
   });
 })
+
 //delete a product
 app.delete('/products/:i', function(req, res){
   var monk = require('monk');
