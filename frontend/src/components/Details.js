@@ -55,9 +55,11 @@ export default class Details extends Component {
                   </p>
                   <p className="text-muted lead">{info}</p>
                   <div>
+                    
                       <Link to={{pathname:"/toylist", user : this.props.location.state.user}}>
                           <ButtonContainer> back to products </ButtonContainer>
                       </Link>
+                      { !auth.isAdmin() ?
                       <ButtonContainer 
                       //disabled={inCart?true:false}
                       onClick = {()=>{
@@ -65,8 +67,8 @@ export default class Details extends Component {
                       }}
                       >
                       add to cart
-                      {/* //  {inCart ? "inCart":"add to cart"} */}
-                      </ButtonContainer>
+                      </ButtonContainer> : <p></p>
+                    }
                   </div>
                   <ProductConsumer>
                     { value => {

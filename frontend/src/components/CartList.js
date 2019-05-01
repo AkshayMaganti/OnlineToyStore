@@ -75,7 +75,7 @@ export default class CartList extends Component {
       let temp = {"id" : item.id, "quantity" : item.quantity};
       object.push(temp);
     })
-    console.log(object);
+    alert("Changes have been saved");
     fetch('/updatecart',{
 			method: 'POST',
 			headers: {
@@ -86,13 +86,13 @@ export default class CartList extends Component {
 				username : auth.getSession(),
 				items : object ,
 			}),
-    })
-    .then(res => window.alert("Changes have been saved"));
+    });
   }
 
   checkout = () => {
     let cartNew = this.state.cart;
-    console.log(cartNew);
+    let u = this.state.total;
+    alert(`Your total: $${u}` );
     let object = [];
     let object2 = []
     cartNew.map((item) => {
@@ -153,7 +153,7 @@ export default class CartList extends Component {
           <CartItem key={item.id} item={item} increment={this.increment} decrement={this.decrement} remove={this.remove}/>
         ))}
           <div className="text-right">
-            <h3>Total: </h3> ${this.state.total}
+            <h3>Total: ${this.state.total}</h3> 
           </div>
           <div className="text-center">
           
@@ -161,7 +161,7 @@ export default class CartList extends Component {
               <span className="mr-2" >
               <i className="fas " ></i>
               </span>
-                  save changes to cart
+                  update cart
           </ButtonContainer>
 
           </div>
