@@ -1,6 +1,6 @@
 :root{
-  --mainBlue: #2a2a72;
-  --lightBlue: #009ffd;
+  --mainBlue: #232528;
+  --lightBlue: #008000;
   --mainWhite: #f3f3f3;
   --mainDark: #232528;
   --mainYellow: #ffa400;
@@ -8,7 +8,6 @@
 
 body{
   font-family: "Oswald",sans-serif !important;
-
   color:var(--mainDark) !important;
   /* background-image: url('./Assets/9.jpg'); */
   background-size: cover;
