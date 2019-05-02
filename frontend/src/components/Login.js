@@ -48,8 +48,6 @@ export default class Login extends Component {
 				<Form  name="myForm" id="signUpForm" onSubmit={this.formHandler}>
 					<FormGroup className={styles.formgroup}>
 						<FormControl type="name" className={[styles.formcontrol,styles.name1]} placeholder="First Name" name="fname" onChange={this.inputChangeHandler}  />
-						<p>{this.state.formFields.fname.length<1?this.state.errors.fname:""}</p>
-
 						<FormControl type="name" className={styles.formcontrol} placeholder="Last Name" name="lname" onChange={this.inputChangeHandler} />
 					</FormGroup>
 					<FormGroup className={styles.formgroup}>
@@ -58,7 +56,6 @@ export default class Login extends Component {
 					<FormGroup className={styles.formgroup}>
 						<FormControl type="email" className={styles.formcontrol} placeholder="Email" name="email" onChange={this.inputChangeHandler}/>
 					</FormGroup>
-					<p>{this.state.errors.email?this.state.errors.email:""}</p>
 
 					<FormGroup className={styles.formgroup}>        
 						<FormControl type="password" className={styles.formcontrol} placeholder="Password" name="pwd" onChange={this.inputChangeHandler}/>

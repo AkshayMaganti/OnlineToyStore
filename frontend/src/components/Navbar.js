@@ -17,11 +17,7 @@ export default class Navbar extends Component {
 
     logout(){
         auth.logout();
-        if (window.location.pathname == "/toylist"){
-            history.push("/");
-        }
-        else 
-            window.location.reload();
+        window.location.reload();
     }
   render() {
     let x = '';
@@ -43,24 +39,24 @@ export default class Navbar extends Component {
        
          
         {!(auth.isAdmin()) ?   
-        <Link to={{pathname: "/cart",user: auth.getSession()}} className="ml-auto nav-link">
+        <Link to={{pathname: "/cart",user: auth.getSession()}} className=" nav-link">
             <ButtonContainer>
                     {"My Cart"}
             </ButtonContainer>
         </Link>
         : <p></p>}
         {!(auth.isAdmin()) ? 
-        <Link to={{pathname: "/history",user: auth.getSession()}} className="ml-auto nav-link">
+        <Link to={{pathname: "/history",user: auth.getSession()}} className=" nav-link">
             <ButtonContainer>
                     {"History"}
             </ButtonContainer>
         </Link> 
         : <p></p>}
-        <div className="text-right">
-        <ButtonContainer onClick={this.logout} className="ml-auto nav-link">         
+        <Link className="ml-auto nav-link">
+        <ButtonContainer onClick={this.logout}>         
                 {x}
         </ButtonContainer>
-        </div>
+        </Link>
         </NavWrapper>
     );
 

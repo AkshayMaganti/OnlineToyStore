@@ -13,9 +13,11 @@ export default class ToyList extends Component {
       products: [],
       currentpage :1,
       numberperpage:4,
+      dropsearch: [],
       searchlist: [],
       search_query: '',
-      filter_query: ''
+      filter_query: '',
+      dropdown: "default"
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -23,22 +25,31 @@ export default class ToyList extends Component {
   change = (e) => {
     if(e.target.value != "default")
     {
-        this.state.filter_query = e.target.value;
+        this.filterproducts(e.target.value);
+        this.setState({
+          dropdown : e.target.value 
+        });
     }
-    else{
-      this.state.filter_query = '';
+    else {
+      this.setState({
+        searchlist: [],
+        dropsearch: [],
+        dropdown : e.target.value 
+      });
     }
+    
   }
   handleBlur = (e) => {
     if(e.target.value != "")
     {
-        this.state.search_query = e.target.value;
+        this.loadproducts(e.target.value);
     }
-    else
-    {
-      this.state.search_query = '';
+    else {
+      this.setState({
+        searchlist: this.state.dropsearch
+      });
     }
-
+    
   }
 
   handleClick(event) {
@@ -53,38 +64,48 @@ export default class ToyList extends Component {
       .then(products => this.setState({ products }));
   }
 
-  handleData(event){
-    this.loadproducts();
-  }
-  loadproducts = () => {
+  loadproducts = (textValue) => {
+    if (this.state.dropdown === "default"){
       let newList = [];
-          if(this.state.search_query != '' && this.state.filter_query != 'default')
-          {
-            newList = this.state.products.filter(item => {
-              const item_lc = item.title.toLowerCase();
-              const item_pc = item.category.toLowerCase();
-              const search_val = this.state.search_query.toLowerCase();
-              const filter_val = this.state.filter_query.toLowerCase();
-              // const item_lc.includes(search_val);
-          })
-        }
-          else if (this.state.search_query != '')
-          {
-
-          }
-          else if(this.state.filter_query != 'default')
-          {
-
-          }
-          else{
-            this.setState({
-              searchlist: []
-            });
-          }
-          
-      
+      newList = this.state.products.filter(item => {
+        const item_lc = item.title.toLowerCase();
+        const search_val = textValue.toLowerCase();
+        return item_lc.includes(search_val);
+      });
+      this.setState({
+        searchlist: newList,
+        dropsearch: []
+      });
     }
+    else{
+      let newList = [];
+      newList = this.state.dropsearch.filter(item => {
+        const item_lc = item.title.toLowerCase();
+        const search_val = textValue.toLowerCase();
+        return item_lc.includes(search_val);
+      });
+      this.setState({
+          searchlist: newList
+      });
+    }
+  }
 
+  filterproducts = (textValue) => {
+    let newList = [];
+    let search = '';
+    newList = this.state.products.filter(item => {
+        const item_lc = item.category.toLowerCase();
+        const search_val = textValue.toLowerCase();
+        search = search_val;
+        return item_lc.includes(search_val);
+    });
+    this.setState({
+        searchlist: newList,
+        dropsearch: newList,
+        dropdown: search,
+    });
+
+  }
   render() {
     const { products, currentpage, numberperpage } = this.state;
 
@@ -135,13 +156,11 @@ export default class ToyList extends Component {
                         <option value="default">Default</option>
                         <option value="Board games">Board Games</option>
                         <option value="toy car">Toy Car</option>
+                        <option value="toy">Toy</option>
+                        <option value="road">Road</option>
                         </select>
                     <input type="text" class="form-control" name="x" placeholder="Search toys..." onChange={this.handleBlur}></input>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit" onclick={this.handleData}>
-                           <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
+
                 </form>          
         </div>          
         <div className="row">
@@ -149,17 +168,26 @@ export default class ToyList extends Component {
             <h1 className="text-capitalize font-weight-bold">
               Hello {auth.getSession()}!!
             </h1>
-            <h1 className="text-capitalize font-weight-bold">
-                  Toys List
-            </h1>
+            
             </div>
         </div>
-        
+        {
+          this.state.searchlist.length > 0 ? 
+          <div className="col-10 mx-auto my-2 text-center text-blue">
+          <h1 className="text-capitalize font-weight-bold">
+            Your search result
+          </h1>
+          </div> : <p></p>
+        }
         <div className="row">
         {rendersearched}
 
         </div>
-
+        <div>
+        <h1 className="text-capitalize font-weight-bold text-center">
+                  Toys List
+            </h1>
+        </div>
         <div className="row">
         {renderToys}
         </div>
@@ -168,13 +196,14 @@ export default class ToyList extends Component {
           {renderPageNumbers}
         </ul>
         </div>
+        
+        </div>
         <div className="text-center">
           {auth.isAdmin() ? <Link to="/newform">
           <ButtonContainer>{"Add a new Product"}</ButtonContainer>
           </Link>
           :<p></p>
           } 
-        </div>
         </div>
         </div>
       </React.Fragment>

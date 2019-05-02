@@ -89,15 +89,15 @@
 }
 .name1{
     float: left;
-    clear: both;
-	width: 47.5%;
+	clear: both;
+	width: 100%;
     margin-right: 2.5%;
     margin-bottom: 4%;
 }
 
 .name2{
 	float: left;
-	width: 47.5%;
+
 	margin-left: 2.5%;
 }
 
