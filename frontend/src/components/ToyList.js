@@ -163,15 +163,17 @@ export default class ToyList extends Component {
         <div className="row">
         {renderToys}
         </div>
+        <div className="card-footer">
+        <ul id="page-numbers">
+          {renderPageNumbers}
+        </ul>
+        </div>
+        <div className="text-center">
           {auth.isAdmin() ? <Link to="/newform">
           <ButtonContainer>{"Add a new Product"}</ButtonContainer>
           </Link>
           :<p></p>
           } 
-        <div className="card-footer">
-        <ul id="page-numbers">
-          {renderPageNumbers}
-        </ul>
         </div>
         </div>
         </div>

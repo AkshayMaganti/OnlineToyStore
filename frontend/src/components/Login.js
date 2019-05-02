@@ -115,11 +115,6 @@ export default class Login extends Component {
 					</FormGroup>
 					<p>Are you a user? <a onClick={this.changeUserLogin}>Login as user</a></p>
 
-
-					<p>{this.state.isAdmin?"chandana":""}</p>
-					<input type="text" className={(this.state.isAdmin?styles.demo:styles.FormControl)}></input>
-					<button className={"badge " +(!this.state.isAdmin ? "badge-primary " : "badge-danger ") + " m-4"}>
-					Demo</button>
 				
 				
 				

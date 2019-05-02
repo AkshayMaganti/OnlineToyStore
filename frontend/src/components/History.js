@@ -96,6 +96,7 @@ export default class History extends Component {
             } else {
               return (
                     <div className="text-center">
+                      <Navbar></Navbar>
                       <h1>You have no history</h1>
                     </div>
                 
