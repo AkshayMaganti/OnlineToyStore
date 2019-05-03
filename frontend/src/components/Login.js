@@ -153,24 +153,65 @@ export default class Login extends Component {
 	//calls the api on submitting the form
 	
 	formHandler = e => {
+		let fname=this.state.formFields.fname;
+		let username=this.state.formFields.username;
+		let pwd=this.state.formFields.pwd;
+		let rpwd=this.state.formFields.rpwd;
+		let email=this.state.formFields.email;
+
+		if(! (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(pwd)))
+		{
+			alert("the password should be strong");
+			this.state.errors.password_strength=false;
+		}
+		if(! (/^[a-zA-Z0-9]+@[a-zA-Z]+.[a-zA-Z]{3}$/.test(email)))
+		{
+			alert("Email should xxx@xxx.xxx");
+			this.state.errors.email=false;
+		}
+		if(pwd!=rpwd)
+		{
+			this.state.errors.password=false;
+			alert("password should match");
+		}
 		e.preventDefault();
-		fetch('/register',{
+		fetch('/user',{
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				fname : this.state.formFields.fname ,
-				lname : this.state.formFields.lname ,
-				username : this.state.formFields.username ,
-				email : this.state.formFields.email ,
-				pwd : this.state.formFields.pwd ,
+				username1 : this.state.formFields.username ,
 			}),
-			});
+		})
+		.then(res => res.json())
+		.then( (res) => {
+			if(res.value===true)
+			{
+				alert("username already taken")
+			}
+			else{
+				fetch('/register',{
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						fname : this.state.formFields.fname ,
+						lname : this.state.formFields.lname ,
+						username : this.state.formFields.username ,
+						email : this.state.formFields.email ,
+						pwd : this.state.formFields.pwd ,
+					}),
+					});
+			}
+			console.log(res.value);
 			//clears the form
 			let form = document.getElementById("signUpForm");
-			form.reset();	
+			form.reset();
+		});			
 		}
 
 	loginHandler = e => {

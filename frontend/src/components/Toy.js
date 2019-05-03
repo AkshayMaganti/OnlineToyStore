@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { ProductConsumer } from "../context";
+import Image from 'react-image-resizer';
 export default class Product extends Component {
     state = {
       detailProduct:this.props.product
@@ -47,7 +48,8 @@ export default class Product extends Component {
                   onClick={() => this.handleDetail(id)}
                 >
                   <Link to={{pathname:"/details", state:{detailProduct : this.state.detailProduct, user:this.props.user}}} >
-                    <img src={img} alt="toy" className="card-img-top"/>
+                    {/* <img src={img} alt="toy" className="card-img-top"/> */}
+                    <Image src={img} height={250} width={250}></Image>
                   </Link>
                   <button
                     className="cart-btn"

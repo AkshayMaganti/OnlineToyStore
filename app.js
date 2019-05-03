@@ -269,6 +269,39 @@ app.post('/checkout', function(req,res,next){
    
   });
 });
+//checks if user already exists
+app.post('/user', function(req,res){
+  let username1 = req.body.username1;
+  console.log(req.body)
+  MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true },function (err, db) {
+    if (err) console.log("no username found")
+    let dbo = db.db('test')
+    let obj = {
+      username : username1,
+    };
+    let result = {
+      value : true,
+    } 
+    dbo.collection('users').findOne(obj, function(err,res1) {
+      if (err) next(err);
+      //check if username exists by checking if we get any response
+      if (res1 !== null){
+        result = {
+          value : true,
+        }
+      }
+      else{
+        result = {
+          value : false,
+        }
+        console.log("username doesnot exist")
+      }
+      db.close();
+      res.json(result);  
+    });
+    
+  });
+})
 //history
 app.post('/history', function(req,res,next) {
   let username1 = req.body.username;

@@ -3,7 +3,7 @@ import Toy from './Toy';
 import Navbar from './Navbar';
 import {ButtonContainer} from './Button';
 import './ToyList.css';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import Auth from '../services/Auth';
 const auth = new Auth();
 export default class ToyList extends Component {
@@ -107,6 +107,8 @@ export default class ToyList extends Component {
 
   }
   render() {
+    if(!auth.isAuthenticated())
+      return <Redirect to="/" ></Redirect>;
     const { products, currentpage, numberperpage } = this.state;
 
     // Logic for displaying toys
@@ -122,6 +124,7 @@ export default class ToyList extends Component {
     });
 
     const rendersearched= this.state.searchlist.map(product => {
+      if (product.inventory > 0 || auth.isAdmin() )
       return  <Toy key={product.id} product ={product} products={this.state.products} user={auth.getSession()}/>;
     });
 
